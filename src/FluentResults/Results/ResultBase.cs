@@ -68,9 +68,9 @@ namespace FluentResults
         public IReadOnlyList<ISuccess> Successes => Reasons.OfType<ISuccess>().ToList().AsReadOnly();
 
         /// <summary>
-        /// Message of the first error; null if the result has no errors
+        /// Messages of all errors joined by "; "; null if the result has no errors
         /// </summary>
-        public string ErrorMessage => Reasons.OfType<IError>().Select(error => error.Message).FirstOrDefault();
+        public string ErrorMessage => ResultHelper.GetErrorMessage(this);
 
         /// <summary>
         /// Default constructor
