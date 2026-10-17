@@ -16,7 +16,7 @@ namespace FluentResults
         internal static ResultSettings Settings { get; private set; }
 
         /// <summary>
-        ///     Setup global settings like logging
+        ///     设置全局设置，例如日志
         /// </summary>
         public static void Setup(Action<ResultSettingsBuilder> setupFunc)
         {
@@ -27,7 +27,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Creates a success result
+        ///     创建一个成功的结果
         /// </summary>
         public static Result Ok()
         {
@@ -35,7 +35,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Creates a failed result with the given error
+        ///     使用给定的错误创建一个失败的结果
         /// </summary>
         public static Result Fail(IError error)
         {
@@ -45,7 +45,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Creates a failed result with the given error message. Internally an error object from the error factory is created.
+        ///     使用给定的错误消息创建一个失败的结果。内部会从错误工厂创建一个错误对象。
         /// </summary>
         public static Result Fail(string errorMessage)
         {
@@ -55,8 +55,8 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Creates a failed result with the given error messages. Internally a list of error objects from the error factory is
-        ///     created
+        ///     使用给定的错误消息创建一个失败的结果。内部会从错误工厂
+        ///     创建一个错误对象列表。
         /// </summary>
         public static Result Fail(IEnumerable<string> errorMessages)
         {
@@ -72,7 +72,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Creates a failed result with the given errors.
+        ///     使用给定的错误创建一个失败的结果。
         /// </summary>
         public static Result Fail(IEnumerable<IError> errors)
         {
@@ -89,7 +89,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Creates a success result with the given value
+        ///     使用给定的值创建一个成功的结果
         /// </summary>
         public static Result<TValue> Ok<TValue>(TValue value)
         {
@@ -99,7 +99,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Creates a failed result with the given error
+        ///     使用给定的错误创建一个失败的结果
         /// </summary>
         public static Result<TValue> Fail<TValue>(IError error)
         {
@@ -109,7 +109,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Creates a failed result with the given error message. Internally an error object from the error factory is created.
+        ///     使用给定的错误消息创建一个失败的结果。内部会从错误工厂创建一个错误对象。
         /// </summary>
         public static Result<TValue> Fail<TValue>(string errorMessage)
         {
@@ -119,8 +119,8 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Creates a failed result with the given error messages. Internally a list of error objects from the error factory is
-        ///     created.
+        ///     使用给定的错误消息创建一个失败的结果。内部会从错误工厂
+        ///     创建一个错误对象列表。
         /// </summary>
         public static Result<TValue> Fail<TValue>(IEnumerable<string> errorMessages)
         {
@@ -136,7 +136,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Creates a failed result with the given errors.
+        ///     使用给定的错误创建一个失败的结果。
         /// </summary>
         public static Result<TValue> Fail<TValue>(IEnumerable<IError> errors)
         {
@@ -152,7 +152,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Merge multiple result objects to one result object together
+        ///     将多个结果对象合并为一个结果对象
         /// </summary>
         public static Result Merge(params ResultBase[] results)
         {
@@ -160,7 +160,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Merge multiple result objects to one result object together. Return one result with a list of merged values.
+        ///     将多个结果对象合并为一个结果对象。返回一个包含合并后值列表的结果。
         /// </summary>
         public static Result<IEnumerable<TValue>> Merge<TValue>(params Result<TValue>[] results)
         {
@@ -168,8 +168,8 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Merge multiple result objects to one result object together. Return one result with a flattened list of merged
-        ///     values.
+        ///     将多个结果对象合并为一个结果对象。返回一个包含展平后的合并
+        ///     值列表的结果。
         /// </summary>
         public static Result<IEnumerable<TValue>> MergeFlat<TValue, TArray>(params Result<TArray>[] results)
             where TArray : IEnumerable<TValue>
@@ -178,7 +178,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Create a success/failed result depending on the parameter isSuccess
+        ///     根据参数 isSuccess 创建成功或失败的结果
         /// </summary>
         public static Result OkIf(bool isSuccess, IError error)
         {
@@ -186,7 +186,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Create a success/failed result depending on the parameter isSuccess
+        ///     根据参数 isSuccess 创建成功或失败的结果
         /// </summary>
         public static Result OkIf(bool isSuccess, string error)
         {
@@ -194,10 +194,10 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Create a success/failed result depending on the parameter isSuccess
+        ///     根据参数 isSuccess 创建成功或失败的结果
         /// </summary>
         /// <remarks>
-        ///     Error is lazily evaluated.
+        ///     错误采用延迟求值。
         /// </remarks>
         public static Result OkIf(bool isSuccess, Func<IError> errorFactory)
         {
@@ -205,10 +205,10 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Create a success/failed result depending on the parameter isSuccess
+        ///     根据参数 isSuccess 创建成功或失败的结果
         /// </summary>
         /// <remarks>
-        ///     Error is lazily evaluated.
+        ///     错误采用延迟求值。
         /// </remarks>
         public static Result OkIf(bool isSuccess, Func<string> errorMessageFactory)
         {
@@ -216,7 +216,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Create a success/failed result depending on the parameter isFailure
+        ///     根据参数 isFailure 创建成功或失败的结果
         /// </summary>
         public static Result FailIf(bool isFailure, IError error)
         {
@@ -224,7 +224,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Create a success/failed result depending on the parameter isFailure
+        ///     根据参数 isFailure 创建成功或失败的结果
         /// </summary>
         public static Result FailIf(bool isFailure, string error)
         {
@@ -232,10 +232,10 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Create a success/failed result depending on the parameter isFailure
+        ///     根据参数 isFailure 创建成功或失败的结果
         /// </summary>
         /// <remarks>
-        ///     Error is lazily evaluated.
+        ///     错误采用延迟求值。
         /// </remarks>
         public static Result FailIf(bool isFailure, Func<IError> errorFactory)
         {
@@ -243,10 +243,10 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Create a success/failed result depending on the parameter isFailure
+        ///     根据参数 isFailure 创建成功或失败的结果
         /// </summary>
         /// <remarks>
-        ///     Error is lazily evaluated.
+        ///     错误采用延迟求值。
         /// </remarks>
         public static Result FailIf(bool isFailure, Func<string> errorMessageFactory)
         {
@@ -254,7 +254,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Create a success/failed result depending on the parameter isFailure containing the specified errors
+        ///     根据参数 isFailure 创建成功或失败的结果，并包含指定的错误
         /// </summary>
         public static Result FailIf(bool isFailure, IEnumerable<IError> errors)
         {
@@ -262,7 +262,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Create a success/failed result if any error objects exist
+        ///     如果存在任何错误对象，则创建成功或失败的结果
         /// </summary>
         public static Result FailIfNotEmpty(IEnumerable<IError> errors)
         {
@@ -270,10 +270,10 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Create a success/failed result depending if any error objects exist
+        ///     根据是否存在任何错误对象创建成功或失败的结果
         /// </summary>
         /// <remarks>
-        ///     Error is lazily evaluated.
+        ///     错误采用延迟求值。
         /// </remarks>
         public static Result FailIfNotEmpty<T>(IEnumerable<T> errors, Func<T, IError> func)
         {
@@ -281,8 +281,8 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Executes the action. If an exception is thrown within the action then this exception is transformed via the
-        ///     catchHandler to an Error object
+        ///     执行该操作。如果操作中抛出异常，则该异常会通过
+        ///     catchHandler 转换为 Error 对象
         /// </summary>
         public static Result Try(Action action, Func<Exception, IError> catchHandler = null)
         {
@@ -300,8 +300,8 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Executes the action. If an exception is thrown within the action then this exception is transformed via the
-        ///     catchHandler to an Error object
+        ///     执行该操作。如果操作中抛出异常，则该异常会通过
+        ///     catchHandler 转换为 Error 对象
         /// </summary>
         public static async Task<Result> Try(Func<Task> action, Func<Exception, IError> catchHandler = null)
         {
@@ -319,8 +319,8 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Executes the action. If an exception is thrown within the action then this exception is transformed via the
-        ///     catchHandler to an Error object
+        ///     执行该操作。如果操作中抛出异常，则该异常会通过
+        ///     catchHandler 转换为 Error 对象
         /// </summary>
         public static async ValueTask<Result> Try(Func<ValueTask> action, Func<Exception, IError> catchHandler = null)
         {
@@ -338,8 +338,8 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Executes the action. If an exception is thrown within the action then this exception is transformed via the
-        ///     catchHandler to an Error object
+        ///     执行该操作。如果操作中抛出异常，则该异常会通过
+        ///     catchHandler 转换为 Error 对象
         /// </summary>
         public static Result<T> Try<T>(Func<T> action, Func<Exception, IError> catchHandler = null)
         {
@@ -356,8 +356,8 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Executes the action. If an exception is thrown within the action then this exception is transformed via the
-        ///     catchHandler to an Error object
+        ///     执行该操作。如果操作中抛出异常，则该异常会通过
+        ///     catchHandler 转换为 Error 对象
         /// </summary>
         public static async Task<Result<T>> Try<T>(Func<Task<T>> action, Func<Exception, IError> catchHandler = null)
         {
@@ -374,8 +374,8 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Executes the action. If an exception is thrown within the action then this exception is transformed via the
-        ///     catchHandler to an Error object
+        ///     执行该操作。如果操作中抛出异常，则该异常会通过
+        ///     catchHandler 转换为 Error 对象
         /// </summary>
         public static async ValueTask<Result<T>> Try<T>(Func<ValueTask<T>> action,
             Func<Exception, IError> catchHandler = null)
@@ -393,8 +393,8 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Executes the action. If an exception is thrown within the action then this exception is transformed via the
-        ///     catchHandler to an Error object
+        ///     执行该操作。如果操作中抛出异常，则该异常会通过
+        ///     catchHandler 转换为 Error 对象
         /// </summary>
         public static Result Try(Func<Result> action, Func<Exception, IError> catchHandler = null)
         {
@@ -411,8 +411,8 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Executes the action. If an exception is thrown within the action then this exception is transformed via the
-        ///     catchHandler to an Error object
+        ///     执行该操作。如果操作中抛出异常，则该异常会通过
+        ///     catchHandler 转换为 Error 对象
         /// </summary>
         public static async Task<Result> Try(Func<Task<Result>> action, Func<Exception, IError> catchHandler = null)
         {
@@ -429,8 +429,8 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Executes the action. If an exception is thrown within the action then this exception is transformed via the
-        ///     catchHandler to an Error object
+        ///     执行该操作。如果操作中抛出异常，则该异常会通过
+        ///     catchHandler 转换为 Error 对象
         /// </summary>
         public static async ValueTask<Result> Try(Func<ValueTask<Result>> action,
             Func<Exception, IError> catchHandler = null)
@@ -448,8 +448,8 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Executes the action. If an exception is thrown within the action then this exception is transformed via the
-        ///     catchHandler to an Error object
+        ///     执行该操作。如果操作中抛出异常，则该异常会通过
+        ///     catchHandler 转换为 Error 对象
         /// </summary>
         public static Result<T> Try<T>(Func<Result<T>> action, Func<Exception, IError> catchHandler = null)
         {
@@ -466,8 +466,8 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Executes the action. If an exception is thrown within the action then this exception is transformed via the
-        ///     catchHandler to an Error object
+        ///     执行该操作。如果操作中抛出异常，则该异常会通过
+        ///     catchHandler 转换为 Error 对象
         /// </summary>
         public static async Task<Result<T>> Try<T>(Func<Task<Result<T>>> action,
             Func<Exception, IError> catchHandler = null)
@@ -485,8 +485,8 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Executes the action. If an exception is thrown within the action then this exception is transformed via the
-        ///     catchHandler to an Error object
+        ///     执行该操作。如果操作中抛出异常，则该异常会通过
+        ///     catchHandler 转换为 Error 对象
         /// </summary>
         public static async ValueTask<Result<T>> Try<T>(Func<ValueTask<Result<T>>> action,
             Func<Exception, IError> catchHandler = null)

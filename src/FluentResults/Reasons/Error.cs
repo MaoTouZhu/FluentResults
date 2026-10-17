@@ -6,27 +6,27 @@ using System.Linq;
 namespace FluentResults
 {
     /// <summary>
-    /// Objects from Error class cause a failed result
+    /// Error 类的对象会导致失败的结果
     /// </summary>
     public class Error : IError
     {
         /// <summary>
-        /// Message of the error
+        /// 错误消息
         /// </summary>
         public string Message { get; protected set; }
 
         /// <summary>
-        /// Metadata of the error
+        /// 错误的元数据
         /// </summary>
         public Dictionary<string, object> Metadata { get; }
 
         /// <summary>
-        /// Get the reasons of an error
+        /// 获取错误的原因
         /// </summary>
         public List<IError> Reasons { get; }
 
         /// <summary>
-        /// Creates a new instance of <see cref="Error"/>
+        /// 创建 <see cref="Error"/> 的新实例
         /// </summary>
         protected Error()
         {
@@ -35,9 +35,9 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="Error"/>
+        /// 创建 <see cref="Error"/> 的新实例
         /// </summary>
-        /// <param name="message">Description of the error</param>
+        /// <param name="message">错误的描述</param>
         public Error(string message)
             : this()
         {
@@ -45,10 +45,10 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="Error"/>
+        /// 创建 <see cref="Error"/> 的新实例
         /// </summary>
-        /// <param name="message">Description of the error</param>
-        /// <param name="causedBy">The root cause of the <see cref="Error"/></param>
+        /// <param name="message">错误的描述</param>
+        /// <param name="causedBy"><see cref="Error"/> 的根因</param>
         public Error(string message, IError causedBy)
             : this(message)
         {
@@ -59,7 +59,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Set the root cause of the error
+        /// 设置错误的根因
         /// </summary>
         public Error CausedBy(IError error)
         {
@@ -71,7 +71,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Set the root cause of the error
+        /// 设置错误的根因
         /// </summary>
         public Error CausedBy(Exception exception)
         {
@@ -83,7 +83,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Set the root cause of the error
+        /// 设置错误的根因
         /// </summary>
         public Error CausedBy(string message, Exception exception)
         {
@@ -95,7 +95,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Set the root cause of the error
+        /// 设置错误的根因
         /// </summary>
         public Error CausedBy(string message)
         {
@@ -104,7 +104,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Set the root cause of the error
+        /// 设置错误的根因
         /// </summary>
         public Error CausedBy(IEnumerable<IError> errors)
         {
@@ -116,7 +116,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Set the root cause of the error
+        /// 设置错误的根因
         /// </summary>
         public Error CausedBy(IEnumerable<string> errors)
         {
@@ -128,7 +128,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Set the metadata
+        /// 设置元数据
         /// </summary>
         public Error WithMetadata(string metadataName, object metadataValue)
         {
@@ -137,7 +137,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Set the metadata
+        /// 设置元数据
         /// </summary>
         public Error WithMetadata(Dictionary<string, object> metadata)
         {
@@ -150,7 +150,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// ToString override
+        /// 重写的 ToString
         /// </summary>
         public override string ToString()
         {

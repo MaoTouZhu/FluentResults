@@ -1,26 +1,26 @@
 ﻿namespace FluentResults.Samples.WebController
 {
-    // This is an ASP.NET WebApi Controller
+    // 这是一个 ASP.NET WebApi 控制器
     public class CustomerController
     {
         public ResultDto CreateCustomer(CreateCustomerDto model)
         {
             var result = CreateCustomerInternal(model);
 
-            // Use an custom ResultDto class at the system boundaries so that the public api is in your responsibility.
-            // Transform the FluentResult Result object to an custom ResultDto object as last as possible.
+            // 在系统边界使用自定义 ResultDto 类，让公共 API 由你负责。
+            // 尽可能晚地把 FluentResult 的 Result 对象转换成自定义 ResultDto 对象。
             return result.ToResultDto();
         }
 
         private Result CreateCustomerInternal(CreateCustomerDto model)
         {
-            // Create customer business logic
+            // 创建客户的业务逻辑
             return Result.Ok();
         }
     }
 
     public class CreateCustomerDto
     {
-        // Some customer properties
+        // 一些客户属性
     }
 }

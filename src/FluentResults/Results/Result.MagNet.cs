@@ -6,47 +6,47 @@ namespace FluentResults
     public partial class Result
     {
         /// <summary>
-        ///     Default error message used when a failed result has no message.
+        ///     当失败的结果没有消息时使用的默认错误消息。
         /// </summary>
         public const string DefaultErrorMessage = "Undefined error";
 
         private static readonly Exception DefaultErrorInstance = new Exception(DefaultErrorMessage);
 
         /// <summary>
-        ///     Default exception thrown by <see cref="ResultBase"/>.<c>Throw()</c> for a successful result.
+        ///     对于成功的结果，由 <see cref="ResultBase"/>.<c>Throw()</c> 抛出的默认异常。
         /// </summary>
         public static Exception DefaultError => DefaultErrorInstance;
 
         /// <summary>
-        ///     Implicit conversion of a string to a failed <see cref="Result"/>.
-        ///     The string is used as the error message.
+        ///     从字符串到失败的 <see cref="Result"/> 的隐式转换。
+        ///     该字符串用作错误消息。
         /// </summary>
         public static implicit operator Result(string errorMessage)
             => errorMessage is null ? Fail(DefaultErrorMessage) : Fail(errorMessage);
 
         /// <summary>
-        ///     Implicit conversion of an exception to a failed <see cref="Result"/>.
-        ///     The exception is preserved in an <see cref="ExceptionalError"/>.
+        ///     从异常到失败的 <see cref="Result"/> 的隐式转换。
+        ///     该异常保存在 <see cref="ExceptionalError"/> 中。
         /// </summary>
         public static implicit operator Result(Exception exception)
             => exception is null ? Fail(DefaultErrorMessage) : Fail(new ExceptionalError(exception));
 
         /// <summary>
-        ///     Implicit conversion of a boolean to a <see cref="Result"/>.
-        ///     True creates a success; false creates a failure with <see cref="DefaultErrorMessage"/>.
+        ///     从布尔值到 <see cref="Result"/> 的隐式转换。
+        ///     true 创建成功；false 创建带有 <see cref="DefaultErrorMessage"/> 的失败。
         /// </summary>
         public static implicit operator Result(bool isSuccess)
             => isSuccess ? Ok() : Fail(DefaultErrorMessage);
 
         /// <summary>
-        ///     Implicit conversion of a <see cref="Result"/> to its success state.
+        ///     从 <see cref="Result"/> 到其成功状态的隐式转换。
         /// </summary>
         public static implicit operator bool(Result result)
             => result != null && result.IsSuccess;
 
         /// <summary>
-        ///     Implicit conversion of a <see cref="Result"/> to the exception it represents.
-        ///     A successful result yields <see cref="DefaultError"/>.
+        ///     从 <see cref="Result"/> 到其表示的异常的隐式转换。
+        ///     成功的结果会返回 <see cref="DefaultError"/>。
         /// </summary>
         public static implicit operator Exception(Result result)
             => ResultHelper.ToException(result);

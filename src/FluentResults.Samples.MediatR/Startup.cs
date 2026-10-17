@@ -25,7 +25,7 @@ namespace FluentResults.Samples.MediatR
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // 运行时调用此方法，可在这里向容器添加服务。
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
@@ -33,7 +33,7 @@ namespace FluentResults.Samples.MediatR
             services.AddMediatR(typeof(Startup));
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // 运行时调用此方法，可在这里配置 HTTP 请求管道。
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -57,13 +57,13 @@ namespace FluentResults.Samples.MediatR
             });
         }
 
-        // ConfigureContainer is where you can register things directly
-        // with Autofac. This runs after ConfigureServices so the things
-        // here will override registrations made in ConfigureServices.
-        // Don't build the container; that gets done for you by the factory.
+        // ConfigureContainer 用于直接注册依赖，
+        // 这里使用 Autofac。它在 ConfigureServices 之后运行，
+        // 因此这里的注册会覆盖 ConfigureServices 中的注册。
+        // 不要自行构建容器，工厂会替你完成。
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            // Register your own things directly with Autofac, like:
+            // 在这里直接向 Autofac 注册你自己的类型，例如：
 
             builder.RegisterAssemblyTypes(typeof(IMediator).GetTypeInfo().Assembly).AsImplementedInterfaces();
 
@@ -80,15 +80,15 @@ namespace FluentResults.Samples.MediatR
                 builder
                     .RegisterAssemblyTypes(typeof(Ping).GetTypeInfo().Assembly)
                     .AsClosedTypesOf(mediatrOpenType)
-                    // when having a single class implementing several handler types
-                    // this call will cause a handler to be called twice
-                    // in general you should try to avoid having a class implementing for instance `IRequestHandler<,>` and `INotificationHandler<>`
-                    // the other option would be to remove this call
-                    // see also https://github.com/jbogard/MediatR/issues/462
+                    // 当一个类实现多种处理器接口时，
+                    // 这次注册会导致处理器被调用两次。
+                    // 通常应避免让同一个类同时实现 `IRequestHandler<,>` 和 `INotificationHandler<>`，
+                    // 另一种选择是移除这次调用，
+                    // 另见 https://github.com/jbogard/MediatR/issues/462
                     .AsImplementedInterfaces();
             }
 
-            // It appears Autofac returns the last registered types first
+            // Autofac 似乎会先返回最后注册的类型
             builder.RegisterGeneric(typeof(RequestPostProcessorBehavior<,>)).As(typeof(IPipelineBehavior<,>));
             builder.RegisterGeneric(typeof(RequestPreProcessorBehavior<,>)).As(typeof(IPipelineBehavior<,>));
             builder.RegisterGeneric(typeof(RequestExceptionActionProcessorBehavior<,>)).As(typeof(IPipelineBehavior<,>));

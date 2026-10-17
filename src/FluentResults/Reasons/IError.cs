@@ -4,12 +4,12 @@
 namespace FluentResults
 {
     /// <summary>
-    /// Definition of an error
+    /// 错误的定义
     /// </summary>
     public interface IError : IReason
     {
         /// <summary>
-        /// Reasons of the error
+        /// 错误的原因
         /// </summary>
         List<IError> Reasons { get; }
     }

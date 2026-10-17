@@ -2,7 +2,7 @@
 
 namespace FluentResults.Samples.DomainDrivenDesign
 {
-    // Entity
+    // 实体
     public class Customer
     {
         public Guid Id { get; private set; }
@@ -16,22 +16,22 @@ namespace FluentResults.Samples.DomainDrivenDesign
             Id = Guid.NewGuid();
         }
 
-        // Return type of Result<Customer> is not necessary in this scenario because this method contains no validation
+        // 此场景不需要返回 Result<Customer>，因为该方法不包含校验
         public static Customer Create()
         {
             return new Customer();
         }
 
-        // Return a Result object which indicates success or failure of the operation
+        // 返回一个表示操作成功或失败的 Result 对象
         public Result AddAddress(Address address)
         {
-            // Execute business rule and return failed result if not valid
+            // 执行业务规则，不满足时返回失败结果
             if (address.City != "New York City")
                 return Result.Fail("Address of customer should be in New York City.");
 
             Address = address;
 
-            // Return success result
+            // 返回成功结果
             return Result.Ok();
         }
     }

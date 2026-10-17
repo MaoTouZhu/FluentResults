@@ -2,15 +2,15 @@
 namespace FluentResults
 {
     /// <summary>
-    /// Extension methods for object base type
+    /// object 基类型的扩展方法
     /// </summary>
     public static class ObjectExtensions
     {
         /// <summary>
-        /// Convert value to result
+        /// 将值转换为结果
         /// </summary>
-        /// <typeparam name="TValue">The type of the result's <see cref="Result{TValue}.Value"/></typeparam>
-        /// <param name="value">The value of the result</param>
+        /// <typeparam name="TValue">结果的 <see cref="Result{TValue}.Value"/> 的类型</typeparam>
+        /// <param name="value">结果的值</param>
         public static Result<TValue> ToResult<TValue>(this TValue value)
         {
             return new Result<TValue>()

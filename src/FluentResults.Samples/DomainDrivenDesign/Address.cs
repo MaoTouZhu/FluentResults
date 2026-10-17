@@ -1,6 +1,6 @@
 ﻿namespace FluentResults.Samples.DomainDrivenDesign
 {
-    // ValueObject
+    // 值对象
     public class Address
     {
         public string Street { get; private set; }
@@ -19,7 +19,7 @@
                 ValidateStreet(street), 
                 ValidateNumber(number));
 
-            // Return failed result if passed parameters are invalid
+            // 传入参数无效时返回失败结果
             if (validationResult.IsFailed)
                 return validationResult;
 
@@ -33,19 +33,19 @@
 
         private static Result ValidateNumber(string number)
         {
-            // option 1: set error as string message
+            // 方式 1：用字符串消息设置错误
             return Result.FailIf(string.IsNullOrEmpty(number), "Number is required.");
 
-            // option 2: set error as Error object
+            // 方式 2：用 Error 对象设置错误
             // return Result.FailIf(string.IsNullOrEmpty(number), new Error("Number is required."));
 
-            // option 3: set error as custom Error object
+            // 方式 3：用自定义 Error 对象设置错误
             // return Result.FailIf(string.IsNullOrEmpty(number), new RequiredError("Number"));
         }
 
         private static Result ValidateStreet(string street)
         {
-            // Multiple results are merged into one result
+            // 多个结果合并为一个结果
             return Result.Merge(
                 Result.FailIf(string.IsNullOrEmpty(street), "Street is required."),
                 Result.FailIf(!string.IsNullOrEmpty(street) && street.Length > 30,

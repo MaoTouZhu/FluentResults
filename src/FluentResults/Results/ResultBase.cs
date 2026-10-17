@@ -7,38 +7,38 @@ using Microsoft.Extensions.Logging;
 namespace FluentResults
 {
     /// <summary>
-    /// Definition of a ResultBase
+    /// ResultBase 的定义
     /// </summary>
     public interface IResultBase
     {
         /// <summary>
-        /// Is true if Reasons contains at least one error
+        /// 如果 Reasons 包含至少一个错误，则为 true
         /// </summary>
         bool IsFailed { get; }
 
         /// <summary>
-        /// Is true if Reasons contains no errors
+        /// 如果 Reasons 不包含任何错误，则为 true
         /// </summary>
         bool IsSuccess { get; }
 
         /// <summary>
-        /// Get all reasons (errors and successes)
+        /// 获取所有原因（错误和成功）
         /// </summary>
         List<IReason> Reasons { get; }
 
         /// <summary>
-        /// Get all errors
+        /// 获取所有错误
         /// </summary>
         IReadOnlyList<IError> Errors { get; }
 
         /// <summary>
-        /// Get all successes
+        /// 获取所有成功
         /// </summary>
         IReadOnlyList<ISuccess> Successes { get; }
     }
 
     /// <summary>
-    /// Default implementation of <see cref="IResultBase"/>
+    /// <see cref="IResultBase"/> 的默认实现
     /// </summary>
     public abstract class ResultBase : IResultBase
     {
@@ -68,12 +68,12 @@ namespace FluentResults
         public IReadOnlyList<ISuccess> Successes => Reasons.OfType<ISuccess>().ToList().AsReadOnly();
 
         /// <summary>
-        /// Message of the first error; null if the result has no errors
+        /// 第一条错误消息；如果结果没有错误，则为 null
         /// </summary>
         public string ErrorMessage => Reasons.OfType<IError>().Select(error => error.Message).FirstOrDefault();
 
         /// <summary>
-        /// Default constructor
+        /// 默认构造函数
         /// </summary>
         protected ResultBase()
         {
@@ -81,7 +81,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Check if the result object contains an error from a specific type
+        /// 检查结果对象是否包含特定类型的错误
         /// </summary>
         public bool HasError<TError>() where TError : IError
         {
@@ -89,7 +89,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Check if the result object contains an error from a specific type
+        /// 检查结果对象是否包含特定类型的错误
         /// </summary>
         public bool HasError<TError>(out IEnumerable<TError> result) where TError : IError
         {
@@ -97,7 +97,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Check if the result object contains an error from a specific type and with a specific condition
+        /// 检查结果对象是否包含特定类型且满足特定条件的错误
         /// </summary>
         public bool HasError<TError>(Func<TError, bool> predicate) where TError : IError
         {
@@ -105,7 +105,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Check if the result object contains an error from a specific type and with a specific condition
+        /// 检查结果对象是否包含特定类型且满足特定条件的错误
         /// </summary>
         public bool HasError<TError>(Func<TError, bool> predicate, out IEnumerable<TError> result) where TError : IError
         {
@@ -116,7 +116,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Check if the result object contains an error with a specific condition
+        /// 检查结果对象是否包含满足特定条件的错误
         /// </summary>
         public bool HasError(Func<IError, bool> predicate)
         {
@@ -124,7 +124,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Check if the result object contains an error with a specific condition
+        /// 检查结果对象是否包含满足特定条件的错误
         /// </summary>
         public bool HasError(Func<IError, bool> predicate, out IEnumerable<IError> result)
         {
@@ -135,7 +135,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Check if the result object contains an exception from a specific type
+        /// 检查结果对象是否包含特定类型的异常
         /// </summary>
         public bool HasException<TException>() where TException : Exception
         {
@@ -143,7 +143,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Check if the result object contains an exception from a specific type
+        /// 检查结果对象是否包含特定类型的异常
         /// </summary>
         public bool HasException<TException>(out IEnumerable<IError> result) where TException : Exception
         {
@@ -151,7 +151,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Check if the result object contains an exception from a specific type and with a specific condition
+        /// 检查结果对象是否包含特定类型且满足特定条件的异常
         /// </summary>
         public bool HasException<TException>(Func<TException, bool> predicate) where TException : Exception
         {
@@ -159,7 +159,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Check if the result object contains an exception from a specific type and with a specific condition
+        /// 检查结果对象是否包含特定类型且满足特定条件的异常
         /// </summary>
         public bool HasException<TException>(Func<TException, bool> predicate, out IEnumerable<IError> result) where TException : Exception
         {
@@ -172,7 +172,7 @@ namespace FluentResults
         
 
         /// <summary>
-        /// Check if the result object contains a success from a specific type
+        /// 检查结果对象是否包含特定类型的成功
         /// </summary>
         public bool HasSuccess<TSuccess>() where TSuccess : ISuccess
         {
@@ -180,7 +180,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Check if the result object contains a success from a specific type
+        /// 检查结果对象是否包含特定类型的成功
         /// </summary>
         public bool HasSuccess<TSuccess>(out IEnumerable<TSuccess> result) where TSuccess : ISuccess
         {
@@ -188,7 +188,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Check if the result object contains a success from a specific type and with a specific condition
+        /// 检查结果对象是否包含特定类型且满足特定条件的成功
         /// </summary>
         public bool HasSuccess<TSuccess>(Func<TSuccess, bool> predicate) where TSuccess : ISuccess
         {
@@ -196,7 +196,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Check if the result object contains a success from a specific type and with a specific condition
+        /// 检查结果对象是否包含特定类型且满足特定条件的成功
         /// </summary>
         public bool HasSuccess<TSuccess>(Func<TSuccess, bool> predicate, out IEnumerable<TSuccess> result) where TSuccess : ISuccess
         {
@@ -204,7 +204,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Check if the result object contains a success with a specific condition
+        /// 检查结果对象是否包含满足特定条件的成功
         /// </summary>
         public bool HasSuccess(Func<ISuccess, bool> predicate, out IEnumerable<ISuccess> result)
         {
@@ -212,7 +212,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Check if the result object contains a success with a specific condition
+        /// 检查结果对象是否包含满足特定条件的成功
         /// </summary>
         public bool HasSuccess(Func<ISuccess, bool> predicate)
         {
@@ -221,14 +221,14 @@ namespace FluentResults
     }
 
     /// <summary>
-    /// Default implementation of <see cref="IResultBase"/> generics
+    /// <see cref="IResultBase"/> 泛型的默认实现
     /// </summary>
     public abstract class ResultBase<TResult> : ResultBase
         where TResult : ResultBase<TResult>
 
     {
         /// <summary>
-        /// Add a reason (success or error)
+        /// 添加一个原因（成功或错误）
         /// </summary>
         public TResult WithReason(IReason reason)
         {
@@ -237,7 +237,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Add multiple reasons (success or error)
+        /// 添加多个原因（成功或错误）
         /// </summary>
         public TResult WithReasons(IEnumerable<IReason> reasons)
         {
@@ -246,7 +246,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Add an error
+        /// 添加一个错误
         /// </summary>
         public TResult WithError(string errorMessage)
         {
@@ -254,7 +254,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Add an error
+        /// 添加一个错误
         /// </summary>
         public TResult WithError(IError error)
         {
@@ -262,7 +262,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Add multiple errors
+        /// 添加多个错误
         /// </summary>
         public TResult WithErrors(IEnumerable<IError> errors)
         {
@@ -270,7 +270,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Add multiple errors
+        /// 添加多个错误
         /// </summary>
         public TResult WithErrors(IEnumerable<string> errors)
         {
@@ -278,7 +278,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Add an error
+        /// 添加一个错误
         /// </summary>
         public TResult WithError<TError>()
             where TError : IError, new()
@@ -287,7 +287,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Add a success
+        /// 添加一个成功
         /// </summary>
         public TResult WithSuccess(string successMessage)
         {
@@ -295,7 +295,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Add a success
+        /// 添加一个成功
         /// </summary>
         public TResult WithSuccess(ISuccess success)
         {
@@ -303,7 +303,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Add a success
+        /// 添加一个成功
         /// </summary>
         public TResult WithSuccess<TSuccess>()
             where TSuccess : Success, new()
@@ -312,7 +312,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Add multiple successes
+        /// 添加多个成功
         /// </summary>
         public TResult WithSuccesses(IEnumerable<ISuccess> successes)
         {
@@ -325,7 +325,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Log the result. Configure the logger via Result.Setup(..)
+        /// 记录结果日志。通过 Result.Setup(..) 配置日志记录器
         /// </summary>
         public TResult Log(LogLevel logLevel = LogLevel.Information)
         {
@@ -333,7 +333,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Log the result. Configure the logger via Result.Setup(..)
+        /// 记录结果日志。通过 Result.Setup(..) 配置日志记录器
         /// </summary>
         public TResult Log(string context, LogLevel logLevel = LogLevel.Information)
         {
@@ -341,7 +341,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Log the result with a specific logger context. Configure the logger via Result.Setup(..)
+        /// 使用特定日志上下文记录结果日志。通过 Result.Setup(..) 配置日志记录器
         /// </summary>
         public TResult Log(string context, string content, LogLevel logLevel = LogLevel.Information)
         {
@@ -353,7 +353,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Log the result with a typed context. Configure the logger via Result.Setup(..)
+        /// 使用类型化上下文记录结果日志。通过 Result.Setup(..) 配置日志记录器
         /// </summary>
         public TResult Log<TContext>(LogLevel logLevel = LogLevel.Information)
         {
@@ -361,7 +361,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Log the result with a typed context. Configure the logger via Result.Setup(..)
+        /// 使用类型化上下文记录结果日志。通过 Result.Setup(..) 配置日志记录器
         /// </summary>
         public TResult Log<TContext>(string content, LogLevel logLevel = LogLevel.Information)
         {
@@ -373,7 +373,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Log the result only when it is successful. Configure the logger via Result.Setup(..)
+        /// 仅当结果成功时记录结果日志。通过 Result.Setup(..) 配置日志记录器
         /// </summary>
         public TResult LogIfSuccess(LogLevel logLevel = LogLevel.Information)
         {
@@ -384,7 +384,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Log the result with a specific logger context only when it is successful. Configure the logger via Result.Setup(..)
+        /// 仅当结果成功时，使用特定日志上下文记录结果日志。通过 Result.Setup(..) 配置日志记录器
         /// </summary>
         public TResult LogIfSuccess(string context, string content = null, LogLevel logLevel = LogLevel.Information)
         {
@@ -395,7 +395,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Log the result with a typed context only when it is successful. Configure the logger via Result.Setup(..)
+        /// 仅当结果成功时，使用类型化上下文记录结果日志。通过 Result.Setup(..) 配置日志记录器
         /// </summary>
         public TResult LogIfSuccess<TContext>(string content = null, LogLevel logLevel = LogLevel.Information)
         {
@@ -406,7 +406,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Log the result only when it is failed. Configure the logger via Result.Setup(..)
+        /// 仅当结果失败时记录结果日志。通过 Result.Setup(..) 配置日志记录器
         /// </summary>
         public TResult LogIfFailed(LogLevel logLevel = LogLevel.Error)
         {
@@ -417,7 +417,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Log the result with a specific logger context only when it is failed. Configure the logger via Result.Setup(..)
+        /// 仅当结果失败时，使用特定日志上下文记录结果日志。通过 Result.Setup(..) 配置日志记录器
         /// </summary>
         public TResult LogIfFailed(string context, string content = null, LogLevel logLevel = LogLevel.Error)
         {
@@ -428,7 +428,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Log the result with a typed context only when it is failed. Configure the logger via Result.Setup(..)
+        /// 仅当结果失败时，使用类型化上下文记录结果日志。通过 Result.Setup(..) 配置日志记录器
         /// </summary>
         public TResult LogIfFailed<TContext>(string content = null, LogLevel logLevel = LogLevel.Error)
         {
@@ -439,10 +439,10 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Throws the exception represented by this result.
-        /// The first <see cref="IExceptionalError"/> keeps its original exception; otherwise the first
-        /// error message is wrapped in an <see cref="Exception"/>; a successful result throws
-        /// <see cref="Result.DefaultError"/>.
+        /// 抛出此结果所表示的异常。
+        /// 第一个 <see cref="IExceptionalError"/> 保留其原始异常；否则会将第一个
+        /// 错误消息包装在 <see cref="Exception"/> 中；成功的结果会抛出
+        /// <see cref="Result.DefaultError"/>。
         /// </summary>
         public void Throw()
         {
@@ -450,7 +450,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Throws only when the result is failed. See <see cref="Throw"/>.
+        /// 仅当结果失败时抛出。参见 <see cref="Throw"/>。
         /// </summary>
         public void ThrowIfFailed()
         {
@@ -459,7 +459,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// ToString override
+        /// 重写 ToString
         /// </summary>
         /// <returns></returns>
         public override string ToString()

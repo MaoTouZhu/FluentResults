@@ -27,7 +27,7 @@ namespace FluentResults.Samples.MediatR.MediatRLogic.PipelineBehaviors
 
         private Task<Result> ValidateAsync(TRequest request)
         {
-            // do here some validation, for example with fluentvalidation
+            // 在这里做一些校验，例如使用 FluentValidation
             return Task.FromResult(Result.Fail("Validation failed"));
             // return Result.Ok();
         }

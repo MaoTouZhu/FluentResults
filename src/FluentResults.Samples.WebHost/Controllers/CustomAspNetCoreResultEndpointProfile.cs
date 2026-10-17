@@ -12,7 +12,7 @@ public class CustomAspNetCoreResultEndpointProfile : DefaultAspNetCoreResultEndp
         if (result.HasError<UnauthorizedError>(out var unauthorizedErrors))
         {
 #if DEBUG
-            // Here you can also use your custom dto to transfer information
+            // 这里也可以使用自定义 DTO 来传递信息
             return new UnauthorizedObjectResult(unauthorizedErrors.First().Message);
 #endif
             return new UnauthorizedResult();
@@ -21,7 +21,7 @@ public class CustomAspNetCoreResultEndpointProfile : DefaultAspNetCoreResultEndp
         if (result.HasError<NotFoundError>(out var notFoundErrors))
         {
 #if DEBUG
-            // Here you can also use your custom dto to transfer information
+            // 这里也可以使用自定义 DTO 来传递信息
             return new NotFoundObjectResult(notFoundErrors.First().Message);
 #endif
             return new NotFoundResult();

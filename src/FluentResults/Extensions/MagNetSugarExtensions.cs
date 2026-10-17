@@ -4,18 +4,18 @@ using System;
 namespace FluentResults
 {
     /// <summary>
-    ///     MagNet-style factory helpers.
+    ///     MagNet 风格的工厂辅助方法。
     /// </summary>
     public static class MagNetSugarExtensions
     {
         /// <summary>
-        ///     Creates a failed <see cref="Result"/> from an error message.
+        ///     根据错误消息创建一个失败的 <see cref="Result"/>。
         /// </summary>
         public static Result ToError(this string errorMessage)
             => errorMessage is null ? Result.Fail(Result.DefaultErrorMessage) : Result.Fail(errorMessage);
 
         /// <summary>
-        ///     Creates a failed <see cref="Result{TValue}"/> from an error message.
+        ///     根据错误消息创建一个失败的 <see cref="Result{TValue}"/>。
         /// </summary>
         public static Result<TValue> ToError<TValue>(this string errorMessage)
             => errorMessage is null
@@ -23,8 +23,8 @@ namespace FluentResults
                 : Result.Fail<TValue>(errorMessage);
 
         /// <summary>
-        ///     Creates a failed <see cref="Result"/> from an exception.
-        ///     The exception is preserved in an <see cref="ExceptionalError"/>.
+        ///     根据异常创建一个失败的 <see cref="Result"/>。
+        ///     该异常保存在 <see cref="ExceptionalError"/> 中。
         /// </summary>
         public static Result ToError(this Exception exception)
             => exception is null
@@ -32,8 +32,8 @@ namespace FluentResults
                 : Result.Fail(new ExceptionalError(exception));
 
         /// <summary>
-        ///     Creates a failed <see cref="Result{TValue}"/> from an exception.
-        ///     The exception is preserved in an <see cref="ExceptionalError"/>.
+        ///     根据异常创建一个失败的 <see cref="Result{TValue}"/>。
+        ///     该异常保存在 <see cref="ExceptionalError"/> 中。
         /// </summary>
         public static Result<TValue> ToError<TValue>(this Exception exception)
             => exception is null

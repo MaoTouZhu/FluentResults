@@ -4,12 +4,12 @@
 namespace FluentResults
 {
     /// <summary>
-    /// Definition of an error containing an exception
+    /// 包含异常的错误定义
     /// </summary>
     public interface IExceptionalError : IError
     {
         /// <summary>
-        /// The exception
+        /// 异常
         /// </summary>
         Exception Exception { get; }
 

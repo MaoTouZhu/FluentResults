@@ -14,11 +14,11 @@ namespace FluentResults.Samples.HangfireJobs
 
         public static Task<ResultDto> Dispatch()
         {
-            // some logic
+            // 一些业务逻辑
             Console.WriteLine("Fire-and-forget!");
 
-            // Use an custom ResultDto class so that the serialization is in your control
-            // Transform the FluentResult Result object to an custom ResultDto object as last as possible.
+            // 使用自定义 ResultDto 类，让序列化方式由你掌控
+            // 尽可能晚地把 FluentResult 的 Result 对象转换成自定义 ResultDto 对象。
             return Task.FromResult(Result.Ok().ToResultDto());
         }
     }

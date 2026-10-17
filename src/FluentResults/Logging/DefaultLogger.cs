@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 namespace FluentResults
 {
     /// <summary>
-    /// Default implementation of <see cref="IResultLogger"/> that doesn't log anything
+    /// <see cref="IResultLogger"/> 的默认实现，不记录任何内容
     /// </summary>
     public class DefaultLogger : IResultLogger
     {

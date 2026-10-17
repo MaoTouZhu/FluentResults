@@ -4,22 +4,22 @@
 namespace FluentResults
 {
     /// <summary>
-    /// Objects from Success class cause no failed result
+    /// Success 类的对象不会导致失败的结果
     /// </summary>
     public class Success : ISuccess
     {
         /// <summary>
-        /// Message of the success
+        /// 成功消息
         /// </summary>
         public string Message { get; protected set; }
 
         /// <summary>
-        /// Metadata of the success
+        /// 成功的元数据
         /// </summary>
         public Dictionary<string, object> Metadata { get; }
 
         /// <summary>
-        /// Default constructor
+        /// 默认构造函数
         /// </summary>
         protected Success()
         {
@@ -27,16 +27,16 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="Success"/> and initializes the <see cref="Message"/> property
+        /// 创建 <see cref="Success"/> 的新实例并初始化 <see cref="Message"/> 属性
         /// </summary>
-        /// <param name="message">The message</param>
+        /// <param name="message">消息</param>
         public Success(string message) : this()
         {
             Message = message;
         }
 
         /// <summary>
-        /// Set the metadata
+        /// 设置元数据
         /// </summary>
         public Success WithMetadata(string metadataName, object metadataValue)
         {
@@ -45,7 +45,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Set the metadata
+        /// 设置元数据
         /// </summary>
         public Success WithMetadata(Dictionary<string, object> metadata)
         {
@@ -58,7 +58,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// ToString override
+        /// 重写的 ToString
         /// </summary>
         /// <returns></returns>
         public override string ToString()

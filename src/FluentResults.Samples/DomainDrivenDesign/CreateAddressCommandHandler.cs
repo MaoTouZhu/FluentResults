@@ -11,10 +11,10 @@
 
         public Result Handle(CreateAddressCommand command)
         {
-            // createAddressResult contains all error messages if address data is invalid
+            // 如果地址数据无效，createAddressResult 会包含所有错误消息
             var createAddressResult = Address.Create(command.Street, command.Number, command.City);
 
-            // Return failed result if address is invalid. Return ASAP
+            // 地址无效时返回失败结果，并尽快返回
             if (createAddressResult.IsFailed)
                 return createAddressResult.ToResult();
 
@@ -22,11 +22,11 @@
 
             var addAddressResult = customer.AddAddress(createAddressResult.Value);
 
-            // Return failed result if adding address is not possible because of business rules. Return ASAP
+            // 因业务规则无法添加地址时返回失败结果，并尽快返回
             if (addAddressResult.IsFailed)
                 return addAddressResult;
 
-            // Manipulations are commited and return success result if nothing failed
+            // 所有操作提交完成，若没有失败则返回成功结果
             _repository.Commit();
             return Result.Ok();
         }

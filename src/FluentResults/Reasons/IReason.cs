@@ -4,17 +4,17 @@ using System.Collections.Generic;
 namespace FluentResults
 {
     /// <summary>
-    /// Definition of a reason.  This is also the base of ISuccess and IError
+    /// 原因的定义。这也是 ISuccess 和 IError 的基础
     /// </summary>
     public interface IReason
     {
         /// <summary>
-        /// The reason's message
+        /// 原因的消息
         /// </summary>
         string Message { get; }
 
         /// <summary>
-        /// Any metadata added to the reason
+        /// 添加到原因的任何元数据
         /// </summary>
         Dictionary<string, object> Metadata { get; }
     }

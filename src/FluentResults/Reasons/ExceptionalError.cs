@@ -4,29 +4,29 @@
 namespace FluentResults
 {
     /// <summary>
-    /// Error class which stores additionally the exception
+    /// 额外存储异常的错误类
     /// </summary>
     public class ExceptionalError : Error, IExceptionalError
     {
         /// <summary>
-        /// Exception of the error
+        /// 错误的异常
         /// </summary>
         public Exception Exception { get; }
         
 
         /// <summary>
-        /// Initialize a new instance with an exception
+        /// 使用异常初始化新实例
         /// </summary>
-        /// <param name="exception">The exception</param>
+        /// <param name="exception">异常</param>
         public ExceptionalError(Exception exception)
             : this(exception.Message, exception)
         { }
 
         /// <summary>
-        /// Initialize a new instance with a custom message and an exception
+        /// 使用自定义消息和异常初始化新实例
         /// </summary>
-        /// <param name="message">The message</param>
-        /// <param name="exception">The exception</param>
+        /// <param name="message">消息</param>
+        /// <param name="exception">异常</param>
         public ExceptionalError(string message, Exception exception)
             : base(message)
         {
@@ -34,7 +34,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// ToString override
+        /// 重写的 ToString
         /// </summary>
         public override string ToString()
         {

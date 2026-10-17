@@ -4,32 +4,32 @@
 namespace FluentResults
 {
     /// <summary>
-    /// Settings for creating and handling result elements
+    /// 用于创建和处理结果元素的设置
     /// </summary>
     public class ResultSettings
     {
         /// <summary>
-        /// Set the ResultLogger
+        /// 设置 ResultLogger
         /// </summary>
         public IResultLogger Logger { get; set; }
 
         /// <summary>
-        /// Factory to create an IError object.  Used in all scenarios where an error is created within Try methods
+        /// 用于创建 IError 对象的工厂。在 Try 方法中创建错误的所有场景中使用
         /// </summary>
         public Func<Exception, IError> DefaultTryCatchHandler { get; set; }
 
         /// <summary>
-        /// Factory to create an ISuccess object. Used in all scenarios where a success is created within FluentResults. 
+        /// 用于创建 ISuccess 对象的工厂。在 FluentResults 中创建成功的所有场景中使用。 
         /// </summary>
         public Func<string, ISuccess> SuccessFactory { get; set; }
 
         /// <summary>
-        /// Factory to create an IError object. Used in all scenarios where an error is created within FluentResults. 
+        /// 用于创建 IError 对象的工厂。在 FluentResults 中创建错误的所有场景中使用。 
         /// </summary>
         public Func<string, IError> ErrorFactory { get; set; }
 
         /// <summary>
-        /// Factory to create an IExceptionalError object. Used in all scenarios where an exceptional error is created within FluentResults. 
+        /// 用于创建 IExceptionalError 对象的工厂。在 FluentResults 中创建异常错误的所有场景中使用。 
         /// </summary>
         public Func<string, Exception, IExceptionalError> ExceptionalErrorFactory { get; set; }
     }

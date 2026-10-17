@@ -2,7 +2,7 @@
 namespace FluentResults
 {
     /// <summary>
-    /// Definition of a success
+    /// 成功的定义
     /// </summary>
     public interface ISuccess : IReason
     { }

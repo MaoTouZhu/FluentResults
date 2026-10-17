@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 namespace FluentResults
 {
     /// <summary>
-    ///     Implementation of a Result
+    ///     Result 的实现
     /// </summary>
     public partial class Result : ResultBase<Result>
     {
         /// <summary>
-        ///     Default constructor
+        ///     默认构造函数
         /// </summary>
         public Result()
         {
         }
 
         /// <summary>
-        ///     Map all errors of the result via errorMapper
+        ///     通过 errorMapper 映射结果中的所有错误
         /// </summary>
         /// <param name="errorMapper"></param>
         /// <returns></returns>
@@ -34,7 +34,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Map all successes of the result via successMapper
+        ///     通过 successMapper 映射结果中的所有成功
         /// </summary>
         /// <param name="successMapper"></param>
         /// <returns></returns>
@@ -46,10 +46,10 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Convert result without value to a result containing a value
+        ///     将不含值的结果转换为包含值的结果
         /// </summary>
-        /// <typeparam name="TNewValue">Type of the value</typeparam>
-        /// <param name="newValue">Value to add to the new result</param>
+        /// <typeparam name="TNewValue">值的类型</typeparam>
+        /// <param name="newValue">要添加到新结果中的值</param>
         public Result<TNewValue> ToResult<TNewValue>(TNewValue newValue = default)
         {
             return new Result<TNewValue>()
@@ -58,14 +58,14 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Convert result to result with value that may fail.
+        ///     将结果转换为带值的结果，该转换可能失败。
         /// </summary>
         /// <example>
         ///     <code>
         ///  var bakeryDtoResult = result.Bind(GetWhichMayFail);
         /// </code>
         /// </example>
-        /// <param name="bind">Transformation that may fail.</param>
+        /// <param name="bind">可能失败的转换。</param>
         public Result<TNewValue> Bind<TNewValue>(Func<Result<TNewValue>> bind)
         {
             var result = new Result<TNewValue>();
@@ -82,14 +82,14 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Convert result to result with value that may fail asynchronously.
+        ///     将结果异步转换为带值的结果，该转换可能失败。
         /// </summary>
         /// <example>
         ///     <code>
         ///  var bakeryDtoResult = result.Bind(GetWhichMayFail);
         /// </code>
         /// </example>
-        /// <param name="bind">Transformation that may fail.</param>
+        /// <param name="bind">可能失败的转换。</param>
         public async Task<Result<TNewValue>> Bind<TNewValue>(Func<Task<Result<TNewValue>>> bind)
         {
             var result = new Result<TNewValue>();
@@ -106,14 +106,14 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Convert result to result with value that may fail asynchronously.
+        ///     将结果异步转换为带值的结果，该转换可能失败。
         /// </summary>
         /// <example>
         ///     <code>
         ///  var bakeryDtoResult = result.Bind(GetWhichMayFail);
         /// </code>
         /// </example>
-        /// <param name="bind">Transformation that may fail.</param>
+        /// <param name="bind">可能失败的转换。</param>
         public async ValueTask<Result<TNewValue>> Bind<TNewValue>(Func<ValueTask<Result<TNewValue>>> bind)
         {
             var result = new Result<TNewValue>();
@@ -130,14 +130,14 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Execute an action which returns a <see cref="Result" />.
+        ///     执行一个返回 <see cref="Result" /> 的操作。
         /// </summary>
         /// <example>
         ///     <code>
         ///  var done = result.Bind(ActionWhichMayFail);
         /// </code>
         /// </example>
-        /// <param name="action">Action that may fail.</param>
+        /// <param name="action">可能失败的操作。</param>
         public Result Bind(Func<Result> action)
         {
             var result = new Result();
@@ -153,14 +153,14 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Execute an action which returns a <see cref="Result" /> asynchronously.
+        ///     异步执行一个返回 <see cref="Result" /> 的操作。
         /// </summary>
         /// <example>
         ///     <code>
         ///  var done = result.Bind(ActionWhichMayFail);
         /// </code>
         /// </example>
-        /// <param name="action">Action that may fail.</param>
+        /// <param name="action">可能失败的操作。</param>
         public async Task<Result> Bind(Func<Task<Result>> action)
         {
             var result = new Result();
@@ -176,14 +176,14 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Execute an action which returns a <see cref="Result" /> asynchronously.
+        ///     异步执行一个返回 <see cref="Result" /> 的操作。
         /// </summary>
         /// <example>
         ///     <code>
         ///  var done = result.Bind(ActionWhichMayFail);
         /// </code>
         /// </example>
-        /// <param name="action">Action that may fail.</param>
+        /// <param name="action">可能失败的操作。</param>
         public async ValueTask<Result> Bind(Func<ValueTask<Result>> action)
         {
             var result = new Result();
@@ -199,7 +199,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Deconstruct Result
+        ///     解构 Result
         /// </summary>
         /// <param name="isSuccess"></param>
         /// <param name="isFailed"></param>
@@ -210,7 +210,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Deconstruct Result
+        ///     解构 Result
         /// </summary>
         /// <param name="isSuccess"></param>
         /// <param name="isFailed"></param>
@@ -223,18 +223,18 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Implict conversion from <see cref="Error" /> to a <see cref="Result" />
+        ///     从 <see cref="Error" /> 到 <see cref="Result" /> 的隐式转换
         /// </summary>
-        /// <param name="error">The error</param>
+        /// <param name="error">错误</param>
         public static implicit operator Result(Error error)
         {
             return Fail(error);
         }
 
         /// <summary>
-        ///     Implict conversion from <see cref="List{Error}" /> to a <see cref="Result" />
+        ///     从 <see cref="List{Error}" /> 到 <see cref="Result" /> 的隐式转换
         /// </summary>
-        /// <param name="errors">The errors</param>
+        /// <param name="errors">错误</param>
         public static implicit operator Result(List<Error> errors)
         {
             return Fail(errors);
@@ -242,31 +242,31 @@ namespace FluentResults
     }
 
     /// <summary>
-    ///     Definition of a result with a value of type <typeparamref name="TValue" />
+    ///     带有类型为 <typeparamref name="TValue" /> 的值的结果的定义
     /// </summary>
-    /// <typeparam name="TValue">The type of the value</typeparam>
+    /// <typeparam name="TValue">值的类型</typeparam>
     public interface IResult<out TValue> : IResultBase
     {
         /// <summary>
-        ///     Get the Value. If result is failed then an Exception is thrown because a failed result has no value. Opposite see
-        ///     property ValueOrDefault.
+        ///     获取 Value。如果结果为失败，则会抛出异常，因为失败的结果没有值。相反的情况参见
+        ///     属性 ValueOrDefault。
         /// </summary>
         TValue Value { get; }
 
         /// <summary>
-        ///     Get the Value. If result is failed then a default value is returned. Opposite see property Value.
+        ///     获取 Value。如果结果为失败，则返回默认值。相反的情况参见属性 Value。
         /// </summary>
         TValue ValueOrDefault { get; }
     }
 
     /// <summary>
-    ///     A result containing a value of type <typeparamref name="TValue" />
+    ///     包含类型为 <typeparamref name="TValue" /> 的值的结果
     /// </summary>
-    /// <typeparam name="TValue">The type of the value</typeparam>
+    /// <typeparam name="TValue">值的类型</typeparam>
     public partial class Result<TValue> : ResultBase<Result<TValue>>, IResult<TValue>
     {
         /// <summary>
-        ///     Default constructor
+        ///     默认构造函数
         /// </summary>
         public Result()
         {
@@ -297,7 +297,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Set value
+        ///     设置值
         /// </summary>
         public Result<TValue> WithValue(TValue value)
         {
@@ -306,7 +306,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Map all errors of the result via errorMapper
+        ///     通过 errorMapper 映射结果中的所有错误
         /// </summary>
         /// <param name="errorMapper"></param>
         /// <returns></returns>
@@ -321,7 +321,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Map all successes of the result via successMapper
+        ///     通过 successMapper 映射结果中的所有成功
         /// </summary>
         /// <param name="successMapper"></param>
         /// <returns></returns>
@@ -334,7 +334,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Convert result with value to result without value
+        ///     将带值的结果转换为不带值的结果
         /// </summary>
         public Result ToResult()
         {
@@ -343,8 +343,8 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Convert result with value to result with another value. Use valueConverter parameter to specify the value
-        ///     transformation logic.
+        ///     将带值的结果转换为带有另一个值的结果。使用 valueConverter 参数
+        ///     指定值的转换逻辑。
         /// </summary>
         public Result<TNewValue> ToResult<TNewValue>(Func<TValue, TNewValue> valueConverter = null)
         {
@@ -352,8 +352,8 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Convert result with value to result with another value. Use valueConverter parameter to specify the value
-        ///     transformation logic.
+        ///     将带值的结果转换为带有另一个值的结果。使用 valueConverter 参数
+        ///     指定值的转换逻辑。
         /// </summary>
         public Result<TNewValue> Map<TNewValue>(Func<TValue, TNewValue> mapLogic)
         {
@@ -366,7 +366,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Convert result with value to result with another value that may fail.
+        ///     将带值的结果转换为带有另一个值的结果，该转换可能失败。
         /// </summary>
         /// <example>
         ///     <code>
@@ -376,7 +376,7 @@ namespace FluentResults
         ///     .Bind(FormattingWhichMayFail);
         /// </code>
         /// </example>
-        /// <param name="bind">Transformation that may fail.</param>
+        /// <param name="bind">可能失败的转换。</param>
         public Result<TNewValue> Bind<TNewValue>(Func<TValue, Result<TNewValue>> bind)
         {
             var result = new Result<TNewValue>();
@@ -393,14 +393,14 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Convert result with value to result with another value that may fail asynchronously.
+        ///     将带值的结果异步转换为带有另一个值的结果，该转换可能失败。
         /// </summary>
         /// <example>
         ///     <code>
         ///  var bakeryDtoResult = await result.Bind(GetWhichMayFail);
         /// </code>
         /// </example>
-        /// <param name="bind">Transformation that may fail.</param>
+        /// <param name="bind">可能失败的转换。</param>
         public async Task<Result<TNewValue>> Bind<TNewValue>(Func<TValue, Task<Result<TNewValue>>> bind)
         {
             var result = new Result<TNewValue>();
@@ -417,14 +417,14 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Convert result with value to result with another value that may fail asynchronously.
+        ///     将带值的结果异步转换为带有另一个值的结果，该转换可能失败。
         /// </summary>
         /// <example>
         ///     <code>
         ///  var bakeryDtoResult = await result.Bind(GetWhichMayFail);
         /// </code>
         /// </example>
-        /// <param name="bind">Transformation that may fail.</param>
+        /// <param name="bind">可能失败的转换。</param>
         public async ValueTask<Result<TNewValue>> Bind<TNewValue>(Func<TValue, ValueTask<Result<TNewValue>>> bind)
         {
             var result = new Result<TNewValue>();
@@ -441,14 +441,14 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Execute an action which returns a <see cref="Result" />.
+        ///     执行一个返回 <see cref="Result" /> 的操作。
         /// </summary>
         /// <example>
         ///     <code>
         ///  var done = result.Bind(ActionWhichMayFail);
         /// </code>
         /// </example>
-        /// <param name="action">Action that may fail.</param>
+        /// <param name="action">可能失败的操作。</param>
         public Result Bind(Func<TValue, Result> action)
         {
             var result = new Result();
@@ -464,14 +464,14 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Execute an action which returns a <see cref="Result" /> asynchronously.
+        ///     异步执行一个返回 <see cref="Result" /> 的操作。
         /// </summary>
         /// <example>
         ///     <code>
         ///  var done = await result.Bind(ActionWhichMayFail);
         /// </code>
         /// </example>
-        /// <param name="action">Action that may fail.</param>
+        /// <param name="action">可能失败的操作。</param>
         public async Task<Result> Bind(Func<TValue, Task<Result>> action)
         {
             var result = new Result();
@@ -487,14 +487,14 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Execute an action which returns a <see cref="Result" /> asynchronously.
+        ///     异步执行一个返回 <see cref="Result" /> 的操作。
         /// </summary>
         /// <example>
         ///     <code>
         ///  var done = await result.Bind(ActionWhichMayFail);
         /// </code>
         /// </example>
-        /// <param name="action">Action that may fail.</param>
+        /// <param name="action">可能失败的操作。</param>
         public async ValueTask<Result> Bind(Func<TValue, ValueTask<Result>> action)
         {
             var result = new Result();
@@ -510,7 +510,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     ToString implementation
+        ///     ToString 实现
         /// </summary>
         public override string ToString()
         {
@@ -520,8 +520,8 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Implicit conversion from <see cref="Result" /> without a value to <see cref="Result{TValue}" /> having the default
-        ///     value
+        ///     从不带值的 <see cref="Result" /> 到具有默认值的 <see cref="Result{TValue}" />
+        ///     的隐式转换
         /// </summary>
         public static implicit operator Result<TValue>(Result result)
         {
@@ -529,7 +529,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Implicit conversion from <see cref="Result{TValue}" /> having a value to <see cref="Result" /> without a value
+        ///     从具有值的 <see cref="Result{TValue}" /> 到不带值的 <see cref="Result" /> 的隐式转换
         /// </summary>
         public static implicit operator Result<object>(Result<TValue> result)
         {
@@ -537,7 +537,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Implicit conversion of a value to <see cref="Result{TValue}" />
+        ///     从值到 <see cref="Result{TValue}" /> 的隐式转换
         /// </summary>
         public static implicit operator Result<TValue>(TValue value)
         {
@@ -548,7 +548,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Implicit conversion of an <see cref="Error" /> to <see cref="Result{TValue}" />
+        ///     从 <see cref="Error" /> 到 <see cref="Result{TValue}" /> 的隐式转换
         /// </summary>
         public static implicit operator Result<TValue>(Error error)
         {
@@ -556,7 +556,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Implicit conversion of a list of <see cref="Error" /> to <see cref="Result{TValue}" />
+        ///     从 <see cref="Error" /> 列表到 <see cref="Result{TValue}" /> 的隐式转换
         /// </summary>
         public static implicit operator Result<TValue>(List<Error> errors)
         {
@@ -564,7 +564,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Deconstruct Result
+        ///     解构 Result
         /// </summary>
         /// <param name="value"></param>
         /// <param name="errors"></param>
@@ -575,7 +575,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Deconstruct Result
+        ///     解构 Result
         /// </summary>
         /// <param name="isSuccess"></param>
         /// <param name="isFailed"></param>
@@ -588,7 +588,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        ///     Deconstruct Result
+        ///     解构 Result
         /// </summary>
         /// <param name="isSuccess"></param>
         /// <param name="isFailed"></param>

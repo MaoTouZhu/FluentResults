@@ -4,12 +4,12 @@
 namespace FluentResults
 {
     /// <summary>
-    /// Helpful extensions for IEnumerable
+    /// IEnumerable 的实用扩展方法
     /// </summary>
     public static class EnumerableExtensions
     {
         /// <summary>
-        /// Merge multiple result objects to one result together
+        /// 将多个结果对象合并为一个结果
         /// </summary>
         public static Result Merge(this IEnumerable<Result> results)
         {
@@ -17,7 +17,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Merge multiple result objects to one result together
+        /// 将多个结果对象合并为一个结果
         /// </summary>
         public static Result<IEnumerable<TValue>> Merge<TValue>(this IEnumerable<Result<TValue>> results)
         {

@@ -4,16 +4,16 @@ using System;
 namespace FluentResults
 {
     /// <summary>
-    /// Extensions for <see cref="IReason"/>
+    /// <see cref="IReason"/> 的扩展方法
     /// </summary>
     public static class ReasonExtensions
     {
         /// <summary>
-        /// Check if a metadata key exists
+        /// 检查元数据键是否存在
         /// </summary>
-        /// <param name="reason">The reason instance</param>
-        /// <param name="key">The metadata key</param>
-        /// <returns>True if the metadata key exists</returns>
+        /// <param name="reason">原因实例</param>
+        /// <param name="key">元数据键</param>
+        /// <returns>如果元数据键存在，则为 true</returns>
         /// <exception cref="ArgumentNullException"></exception>
         public static bool HasMetadataKey(this IReason reason, string key)
         {
@@ -24,12 +24,12 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Check if a metadata key exists and matches the supplied predicate
+        /// 检查元数据键是否存在且与提供的谓词匹配
         /// </summary>
-        /// <param name="reason">The reason instance</param>
-        /// <param name="key">The metadata key</param>
-        /// <param name="predicate">The predicate to check if the metadata key exists</param>
-        /// <returns>True if the metadata value matches the predicate</returns>
+        /// <param name="reason">原因实例</param>
+        /// <param name="key">元数据键</param>
+        /// <param name="predicate">用于检查元数据键是否存在的谓词</param>
+        /// <returns>如果元数据值与谓词匹配，则为 true</returns>
         /// <exception cref="ArgumentNullException"></exception>
         public static bool HasMetadata(this IReason reason, string key, Func<object, bool> predicate)
         {

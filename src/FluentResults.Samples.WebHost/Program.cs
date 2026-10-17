@@ -11,16 +11,16 @@ namespace FluentResults.Samples.WebHost
                 
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // 向容器添加服务。
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            // 在 https://aka.ms/aspnetcore/swashbuckle 了解如何配置 Swagger/OpenAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // 配置 HTTP 请求管道。
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();

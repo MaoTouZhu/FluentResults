@@ -2,8 +2,8 @@
 
 namespace FluentResults.Samples.WebController
 {
-    // The ResultDto look however you want
-    // You can store error messages, warnings, success message, error code, ...
+    // ResultDto 可以按你的需要自由设计
+    // 可以存放错误消息、警告、成功消息、错误码……
     public class ResultDto
     {
         public bool IsSuccess { get; set; }

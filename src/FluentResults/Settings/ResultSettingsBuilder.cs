@@ -4,41 +4,41 @@
 namespace FluentResults
 {
     /// <summary>
-    /// Builder for <see cref="ResultSettings"/>
+    /// <see cref="ResultSettings"/> 的构建器
     /// </summary>
     public class ResultSettingsBuilder
     {
         /// <summary>
-        /// Set the ResultLogger
+        /// 设置 ResultLogger
         /// </summary>
         public IResultLogger Logger { get; set; }
 
         /// <summary>
-        /// Factory to create an IError object.  Used in all scenarios where an error is created within Try methods
+        /// 用于创建 IError 对象的工厂。在 Try 方法中创建错误的所有场景中使用
         /// </summary>
         public Func<Exception, IError> DefaultTryCatchHandler { get; set; }
 
         /// <summary>
-        /// Factory to create an ISuccess object. Used in all scenarios where a success is created within FluentResults. 
+        /// 用于创建 ISuccess 对象的工厂。在 FluentResults 中创建成功的所有场景中使用。 
         /// </summary>
         public Func<string, ISuccess> SuccessFactory { get; set; }
 
         /// <summary>
-        /// Factory to create an IError object. Used in all scenarios where an error is created within FluentResults. 
+        /// 用于创建 IError 对象的工厂。在 FluentResults 中创建错误的所有场景中使用。 
         /// </summary>
         public Func<string, IError> ErrorFactory { get; set; }
         
         /// <summary>
-        /// Factory to create an IExceptionalError object. Used in all scenarios where an exceptional error is created within FluentResults. 
+        /// 用于创建 IExceptionalError 对象的工厂。在 FluentResults 中创建异常错误的所有场景中使用。 
         /// </summary>
         public Func<string, Exception, IExceptionalError> ExceptionalErrorFactory { get; set; }
 
         /// <summary>
-        /// Default constructor that sets default values
+        /// 设置默认值的默认构造函数
         /// </summary>
         public ResultSettingsBuilder()
         {
-            // set defaults
+            // 设置默认值
             Logger = new DefaultLogger();
             DefaultTryCatchHandler = ex => Result.Settings.ExceptionalErrorFactory(ex.Message, ex);
             SuccessFactory = successMessage => new Success(successMessage);
@@ -47,7 +47,7 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Create a <see cref="ResultSettings"/> object using the current values
+        /// 使用当前值创建 <see cref="ResultSettings"/> 对象
         /// </summary>
         /// <returns></returns>
         public ResultSettings Build()

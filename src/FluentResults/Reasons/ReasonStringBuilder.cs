@@ -6,7 +6,7 @@ using System.Linq;
 namespace FluentResults
 {
     /// <summary>
-    /// Creates the text to dispay when serializing reason instances
+    /// 创建序列化原因实例时显示的文本
     /// </summary>
     public class ReasonStringBuilder
     {
@@ -14,10 +14,10 @@ namespace FluentResults
         private readonly List<string> _infos = new List<string>();
          
         /// <summary>
-        /// Specify the type of reason
+        /// 指定原因的类型
         /// </summary>
-        /// <param name="type">The type of reason</param>
-        /// <returns>Reference to the current Builder</returns>
+        /// <param name="type">原因的类型</param>
+        /// <returns>对当前 Builder 的引用</returns>
         public ReasonStringBuilder WithReasonType(Type type)
         {
             _reasonType = type.Name;
@@ -25,11 +25,11 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Add an information label for the given value
+        /// 为给定值添加信息标签
         /// </summary>
-        /// <param name="label">The label to display</param>
-        /// <param name="value">The value the label is for</param>
-        /// <returns>A reference to the current Builder</returns>
+        /// <param name="label">要显示的标签</param>
+        /// <param name="value">标签所对应的值</param>
+        /// <returns>对当前 Builder 的引用</returns>
         public ReasonStringBuilder WithInfo(string label, string value)
         {
             var infoString = value.ToLabelValueStringOrEmpty(label);
@@ -43,9 +43,9 @@ namespace FluentResults
         }
 
         /// <summary>
-        /// Create the reason string from the current information
+        /// 根据当前信息创建原因字符串
         /// </summary>
-        /// <returns>The reason string</returns>
+        /// <returns>原因字符串</returns>
         public string Build()
         {
             var reasonInfoText = _infos.Any()

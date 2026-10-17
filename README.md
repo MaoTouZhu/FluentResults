@@ -8,39 +8,39 @@
 [![Build status](https://dev.azure.com/altmann/FluentResults/_apis/build/status/FluentResults-CI)](https://dev.azure.com/altmann/FluentResults/_build/latest?definitionId=11)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/altmann/FluentResults/blob/master/LICENSE)
 
-**FluentResults is a lightweight .NET library developed to solve a common problem. It returns an object indicating success or failure of an operation instead of throwing/using exceptions.**
+**FluentResults 是一个轻量级的 .NET 库，用于解决一个常见问题。它返回一个表示操作成功或失败的对象，而不是抛出或使用异常。**
 
-You can install [FluentResults with NuGet](https://www.nuget.org/packages/FluentResults/):
+你可以通过 [NuGet 安装 FluentResults](https://www.nuget.org/packages/FluentResults/)：
 
 ```
 Install-Package FluentResults
 ```
 
-> :heart: The most needed community feature is pushed to nuget: **[FluentResults.Extensions.AspNetCore](https://www.nuget.org/packages/FluentResults.Extensions.AspNetCore/)** Read [documentation](https://github.com/altmann/FluentResults/wiki/Returning-Result-Objects-from-ASP.NET-Core-Controller). Try it, test it, [give feedback](https://github.com/altmann/FluentResults/issues/149).
+> :heart: 社区最需要的功能已发布到 NuGet：**[FluentResults.Extensions.AspNetCore](https://www.nuget.org/packages/FluentResults.Extensions.AspNetCore/)** 阅读[文档](https://github.com/altmann/FluentResults/wiki/Returning-Result-Objects-from-ASP.NET-Core-Controller)。试用它、测试它、[给予反馈](https://github.com/altmann/FluentResults/issues/149)。
 
-## Key Features
+## 主要特性
 
-- **Generalised container** which works in all contexts (ASP.NET MVC/WebApi, WPF, DDD Domain Model, etc)
-- Store **multiple errors** in one Result object
-- Store **powerful and elaborative Error and Success objects** instead of only error messages in string format
-- Designing Errors/Success in an object-oriented way
-- Store the **root cause with chain of errors in a hierarchical way**
-- Provide 
-  - .NET Standard, .NET Core, .NET 5+ and .NET Full Framework support (details see [.NET Targeting](https://github.com/altmann/FluentResults#net-targeting))
-  - SourceLink support
-  - powerful [code samples](https://github.com/altmann/FluentResults#samplesbest-practices) which show the integration with famous or common frameworks/libraries
-- **NEW** Enhanced [FluentAssertions Extension](https://github.com/altmann/FluentResults/wiki/Asserting-Result-Objects) to assert FluentResult objects in an elegant way
-- **IN PREVIEW** [Returning Result Objects from ASP.NET Controller](https://github.com/altmann/FluentResults/wiki/Returning-Result-Objects-from-ASP.NET-Core-Controller)
+- **通用容器**，适用于所有场景（ASP.NET MVC/WebApi、WPF、DDD 领域模型等）
+- 在一个 Result 对象中存储**多个错误**
+- 存储**强大且细致的 Error 和 Success 对象**，而不只是字符串格式的错误消息
+- 以面向对象的方式设计 Errors/Success
+- 以分层方式存储**根因及错误链**
+- 提供
+  - .NET Standard、.NET Core、.NET 5+ 和 .NET Full Framework 支持（详情参见 [.NET 目标框架](https://github.com/altmann/FluentResults#net-targeting)）
+  - SourceLink 支持
+  - 强大的[代码示例](https://github.com/altmann/FluentResults#samplesbest-practices)，展示与著名或常见框架/库的集成
+- **新增** 增强的 [FluentAssertions 扩展](https://github.com/altmann/FluentResults/wiki/Asserting-Result-Objects)，以优雅的方式对 FluentResult 对象进行断言
+- **预览中** [从 ASP.NET Controller 返回 Result 对象](https://github.com/altmann/FluentResults/wiki/Returning-Result-Objects-from-ASP.NET-Core-Controller)
 
-## Why Results instead of exceptions
+## 为什么用结果而不是异常
 
-To be honest, the pattern - returning a Result object indicating success or failure - is not at all a new idea. This pattern comes from functional programming languages. With FluentResults this pattern can also be applied in .NET/C#. 
+说实话，这种模式——返回一个表示成功或失败的 Result 对象——完全不是什么新想法。这种模式来自函数式编程语言。借助 FluentResults，这种模式也可以应用于 .NET/C#。 
 
-The article [Exceptions for Flow Control by Vladimir Khorikov](https://enterprisecraftsmanship.com/posts/exceptions-for-flow-control/) describes very well in which scenarios the Result pattern makes sense or not. See the [list of Best Practices](https://github.com/altmann/FluentResults#samplesbest-practices) and the [list of resources](https://github.com/altmann/FluentResults#interesting-resources-about-result-pattern) to learn more about the Result Pattern.
+文章[《Exceptions for Flow Control》，作者 Vladimir Khorikov](https://enterprisecraftsmanship.com/posts/exceptions-for-flow-control/)很好地说明了在哪些场景下 Result 模式有意义、哪些场景下没有意义。参见[最佳实践列表](https://github.com/altmann/FluentResults#samplesbest-practices)和[资源列表](https://github.com/altmann/FluentResults#interesting-resources-about-result-pattern)以进一步了解 Result 模式。
 
-## Creating a Result
+## 创建结果
 
-A Result can store multiple Error and Success messages.
+一个 Result 可以存储多个 Error 和 Success 消息。
 
 ```csharp
 // create a result which indicates success
@@ -54,7 +54,7 @@ Result errorResult4 = Result.Fail(new List<string> { "Error 1", "Error 2" });
 Result errorResult5 = Result.Fail(new List<IError> { new Error("Error 1"), new Error("Error 2") });
 ```
     
-The class `Result` is typically used by void methods which have no return value.
+类 `Result` 通常用于没有返回值的 void 方法。
 
 ```csharp
 public Result DoTask()
@@ -68,7 +68,7 @@ public Result DoTask()
 }
 ```
 
-Additionally a value from a specific type can also be stored if necessary.
+此外，如有必要，也可以存储特定类型的值。
 
 ```csharp
 // create a result which indicates success
@@ -79,7 +79,7 @@ Result<MyCustomObject> successResult2 = Result.Ok(new MyCustomObject());
 Result<int> errorResult = Result.Fail<int>("My error message");
 ```
 
-The class `Result<T>` is typically used by methods with a return type. 
+类 `Result<T>` 通常用于有返回值的方法。
 
 ```csharp
 public Result<Task> GetTask()
@@ -93,9 +93,9 @@ public Result<Task> GetTask()
 }
 ```
 
-## Processing a Result
+## 处理结果
 
-After you get a Result object from a method you have to process it. This means, you have to check if the operation was completed successfully or not. The properties `IsSuccess` and `IsFailed` in the Result object indicate success or failure. The value of a `Result<T>` can be accessed via the properties `Value` and `ValueOrDefault`.
+从方法获得 Result 对象后，你必须处理它。这意味着你需要检查操作是否成功完成。Result 对象中的属性 `IsSuccess` 和 `IsFailed` 表示成功或失败。`Result<T>` 的值可以通过属性 `Value` 和 `ValueOrDefault` 访问。
 
 ```csharp
 Result<int> result = DoSomething();
@@ -123,13 +123,13 @@ var value3 = result.Value; // return value and doesn't throw exception because r
 var value4 = result.ValueOrDefault; // return value because result is in success state
 ```
 
-## Designing errors and success messages
+## 设计错误和成功消息
 
-There are many Result Libraries which store only simple string messages. FluentResults instead stores powerful object-oriented Error and Success objects. The advantage is all the relevant information of an error or success is encapsulated within one class. 
+有许多 Result 库只存储简单的字符串消息。FluentResults 则存储强大的面向对象 Error 和 Success 对象。其优势在于，错误或成功的所有相关信息都封装在一个类中。
 
-The entire public api of this library uses the interfaces `IReason`, `IError` and `ISuccess` for representing a reason, error or success. `IError` and `ISuccess` inherit from `IReason`. If at least one `IError` object exists in the `Reasons` property then the result indicates a failure and the property `IsSuccess` is false. 
+该库的整个公共 API 都使用接口 `IReason`、`IError` 和 `ISuccess` 来表示原因、错误或成功。`IError` 和 `ISuccess` 继承自 `IReason`。如果 `Reasons` 属性中至少存在一个 `IError` 对象，那么结果表示失败，且属性 `IsSuccess` 为 false。
 
-You can create your own `Success` or `Error` classes when you inherit from `ISuccess` or `IError` or if you inherit from `Success` or `Error`. 
+你可以通过继承 `ISuccess` 或 `IError`，或者继承 `Success` 或 `Error` 来创建自己的 `Success` 或 `Error` 类。
 
 ```csharp
 public class StartDateIsAfterEndDateError : Error
@@ -142,13 +142,13 @@ public class StartDateIsAfterEndDateError : Error
 }
 ```
 
-With this mechanism you can also create a class `Warning`. You can choose if a Warning in your system indicates a success or a failure by inheriting from `Success` or `Error` classes.  
+借助这一机制，你也可以创建一个 `Warning` 类。你可以通过继承 `Success` 或 `Error` 类来选择系统中的 Warning 表示成功还是失败。  
 
-## Further features
+## 更多功能
 
-### Chaining error and success messages
+### 链式添加错误和成功消息
 
-In some cases it is necessary to chain multiple error and success messages in one result object. 
+在某些情况下，需要在一个结果对象中链式添加多个错误和成功消息。
 
 ```csharp
 var result = Result.Fail("error message 1")
@@ -157,15 +157,15 @@ var result = Result.Fail("error message 1")
                    .WithSuccess("success message 1");
 ```
 
-### Create a result depending on success/failure condition
+### 根据成功/失败条件创建结果
 
-Very often you have to create a fail or success result depending on a condition. Usually you can write it in this way:
+你经常需要根据条件创建失败或成功的结果。通常你可以这样写：
 
 ```csharp
 var result = string.IsNullOrEmpty(firstName) ? Result.Fail("First Name is empty") : Result.Ok();
 ```
 
-With the methods ```FailIf()``` and ```OkIf()``` you can also write in a more readable way.  You can also supply a collection of errors:
+使用 ```FailIf()``` 和 ```OkIf()``` 方法，你还可以写出更易读的代码。你也可以提供一个错误集合：
 
 ```csharp
 var result = Result.FailIf(string.IsNullOrEmpty(firstName), "First Name is empty");
@@ -176,7 +176,7 @@ var errors = new List<Error>{ new Error("Error 1"), new Error("Error 2") };
 var result2 = Result.FailIf(isValid, errors);
 ```
 
-If your success check is based on whether or not there are errors, you can use `FailIfNotEmpty()`
+如果你的成功检查基于是否存在错误，可以使用 `FailIfNotEmpty()`
 
 ```csharp
 var errors = PerformSomeValidation();
@@ -184,7 +184,7 @@ var errors = PerformSomeValidation();
 var result = Result.FailIfNotEmpty(errors);
 ```
 
-If an error instance should be lazily initialized, overloads accepting ```Func<string>``` or ```Func<IError>``` can be used to that effect:
+如果某个错误实例应当延迟初始化，为此可以使用接受 ```Func<string>``` 或 ```Func<IError>``` 的重载：
 
 ```csharp
 var list = Enumerable.Range(1, 9).ToList();
@@ -206,13 +206,13 @@ var result = Result.FailIfNotEmpty(
 
 ### Try
 
-In some scenarios you want to execute an action. If this action throws an exception then the exception should be caught and transformed to a result object. 
+在某些场景中，你想执行一个动作。如果该动作抛出异常，那么应当捕获该异常并将其转换为结果对象。
 
 ```csharp
 var result = Result.Try(() => DoSomethingCritical());
 ```
 
-You can also return your own `Result` object
+你也可以返回自己的 `Result` 对象
 
 ```csharp
 var result = Result.Try(() => {
@@ -227,7 +227,7 @@ var result = Result.Try(() => {
 });
 ```
 
-In the above example the default catchHandler is used. The behavior of the default catchHandler can be overwritten via the global Result settings (see next example). You can control how the Error object looks.
+在上面的示例中使用了默认的 catchHandler。默认 catchHandler 的行为可以通过全局 Result 设置覆盖（参见下一个示例）。你可以控制 Error 对象的样子。
 
 ```csharp
 Result.Setup(cfg =>
@@ -248,17 +248,17 @@ Result.Setup(cfg =>
 var result = Result.Try(() => DoSomethingCritical());
 ```
 
-It is also possible to pass a custom catchHandler via the ```Try(..)``` method. 
+也可以通过 ```Try(..)``` 方法传入自定义 catchHandler。
 
 ```csharp
 var result = Result.Try(() => DoSomethingCritical(), ex => new MyCustomExceptionError(ex));
 ```
 
-### Root cause of the error
+### 错误的根因
 
-You can also store the root cause of the error in the error object. With the method `CausedBy(...)` the root cause can be passed as Error, list of Errors, string, list of strings or as exception. The root cause is stored in the `Reasons` property of the error object. 
+你也可以在错误对象中存储错误的根因。通过方法 `CausedBy(...)`，根因可以作为 Error、Errors 列表、字符串、字符串列表或异常传入。根因存储在错误对象的 `Reasons` 属性中。
 
-Example 1 - root cause is an exception
+示例 1 - 根因是一个异常
 ```csharp
 try
 {
@@ -270,13 +270,13 @@ catch(CsvExportException ex)
 }
 ```
 
-Example 2 - root cause is an error
+示例 2 - 根因是一个错误
 ```csharp
 Error rootCauseError = new Error("This is the root cause of the error");
 Result result = Result.Fail(new Error("Do something failed", rootCauseError));
 ```
 
-Example 3 - reading root cause from errors
+示例 3 - 从错误中读取根因
 ```csharp
 Result result = ....;
 if (result.IsSuccess)
@@ -291,11 +291,11 @@ foreach(IError error in result.Errors)
 }
 ```
 
-### Metadata
+### 元数据
 
-It is possible to add metadata to Error or Success objects. 
+你可以向 Error 或 Success 对象添加元数据。
 
-One way of doing that is to call the method `WithMetadata(...)` directly where result object is being created. 
+一种方式是在创建结果对象时直接调用方法 `WithMetadata(...)`。
 
 ```csharp
 var result1 = Result.Fail(new Error("Error 1").WithMetadata("metadata name", "metadata value"));
@@ -305,7 +305,7 @@ var result2 = Result.Ok()
                                  .WithMetadata("metadata name", "metadata value"));
 ```
 
-Another way is to call `WithMetadata(...)` in constructor of the `Error` or `Success` class. 
+另一种方式是在 `Error` 或 `Success` 类的构造函数中调用 `WithMetadata(...)`。
 
 ```csharp
 public class DomainError : Error
@@ -318,9 +318,9 @@ public class DomainError : Error
 }
 ```
 
-### Merging
+### 合并
 
-Multiple results can be merged with the static method `Merge()`.
+多个结果可以使用静态方法 `Merge()` 合并。
 
 ```csharp
 var result1 = Result.Ok();
@@ -330,7 +330,7 @@ var result3 = Result.Ok<int>();
 var mergedResult = Result.Merge(result1, result2, result3);
 ```
 
-A list of results can be merged to one result with the extension method `Merge()`. 
+结果列表可以通过扩展方法 `Merge()` 合并为一个结果。
 
 ```csharp
 var result1 = Result.Ok();
@@ -342,7 +342,7 @@ var results = new List<Result> { result1, result2, result3 };
 var mergedResult = results.Merge();
 ```
 
-You can also merge results containing a collection of elements into a flattened collection with `MergeFlat()`.  The value type and Enumerable type must be specified as generic parameters
+你也可以使用 `MergeFlat()` 将包含元素集合的结果合并为一个展平的集合。值类型和 Enumerable 类型必须作为泛型参数指定
 
 ```csharp
 var result1 = Result.Ok(new string[] { "A", "B" });
@@ -353,9 +353,9 @@ var result3 = Result.Ok(new string[] { "E", "F" });
 var mergedResult = Result.MergeFlat<string, string[]>(result1, result2, result3);
 ```
 
-### Converting and Transformation
+### 转换与变换
 
-A result object can be converted to another result object with methods `ToResult()` and `ToResult<TValue>()`.
+结果对象可以通过方法 `ToResult()` 和 `ToResult<TValue>()` 转换为另一个结果对象。
 
 ```csharp
 // converting a result to a result from type Result<int> with default value of int
@@ -379,29 +379,29 @@ Result.Fail<int>("Failed").ToResult<float>();
 Result.Ok<int>().ToResult();
 ```
 
-A value of a result object to another value can be transformed via method ``Map(..)`
+结果对象的值可以通过方法 ``Map(..)` 变换为另一个值
 
 ```csharp
 // converting a result to a result from type Result<float>
 Result.Ok<int>(5).Map(v => new Dto(5));
 ```
 
-### Implicit conversion from T to success result ```Result<T>```
+### 从 T 隐式转换为成功结果 ```Result<T>```
 
 ```csharp
 string myString = "hello world";
 Result<T> result = myString;
 ```
 
-### Implicit conversion from Error to fail result ```Result``` or ```Result<T>```
+### 从 Error 隐式转换为失败结果 ```Result``` 或 ```Result<T>```
 
-from a single error
+从单个错误
 
 ```csharp
 Error myError = new Error("error msg");
 Result result = myError;
 ```
-or from a list of errors
+或者从错误列表
 
 ```csharp
 List<Error> myErrors = new List<Error>() 
@@ -413,11 +413,11 @@ List<Error> myErrors = new List<Error>()
 Result result = myErrors;
 ```
 
-### Bind the result to another result
+### 将结果绑定到另一个结果
 
-Binding is a transformation that returns a `Result` | `Result<T>`.
-It only evaluates the transformation if the original result is successful.
-The reasons of both `Result` will be merged into a new flattened `Result`.
+绑定是一种返回 `Result` | `Result<T>` 的转换。
+它仅在原始结果成功时才执行转换。
+两个 `Result` 的原因会合并到一个新的展平 `Result` 中。
 
 ```csharp
 // converting a result to a result which may fail
@@ -440,7 +440,7 @@ Result.Ok().Bind(() => Result.Ok(5));
 Result r = Result.Ok().Bind(() => Result.Ok());
 ```
 
-The `Bind` has asynchronous overloads.
+`Bind` 有异步重载。
 
 ```csharp
 var result = await Result.Ok(5)
@@ -448,9 +448,9 @@ var result = await Result.Ok(5)
     .Bind(int n => /* next continuation */);
 ```
 
-### Set global factories for ISuccess/IError/IExceptionalError
+### 为 ISuccess/IError/IExceptionalError 设置全局工厂
 
-Within the FluentResults library in some scenarios an ISuccess, IError or IExceptionalError object is created. For example if the method ```Result.Fail("My Error")``` is called then internally an IError object is created. If you need to overwrite this behavior and create in this scenario a custom error class then you can set the error factory via the settings. The same extension points are also available for ISuccess and IExceptionalError. 
+在 FluentResults 库内部，某些场景下会创建 ISuccess、IError 或 IExceptionalError 对象。例如，如果调用方法 ```Result.Fail("My Error")```，那么内部会创建一个 IError 对象。如果你需要覆盖此行为，并在该场景中创建自定义错误类，那么可以在设置中指定错误工厂。同样的扩展点也适用于 ISuccess 和 IExceptionalError。
 
 ```csharp
 Result.Setup(cfg =>
@@ -464,25 +464,25 @@ Result.Setup(cfg =>
 });
 ```
 
-### Mapping errors and successes
+### 映射错误和成功
 
-If you want to add some information to all successes in a result you can use `MapSuccesses(...)` on a result object. 
+如果你想为结果中的所有成功添加一些信息，可以在结果对象上使用 `MapSuccesses(...)`。
 
 ```csharp
 var result = Result.Ok().WithSuccess("Success 1");
 var result2 = result.MapSuccesses(e => new Success("Prefix: " + e.Message));
 ```
 
-If you want to add some information to all errors in a result you can use `MapErrors(...)` on a result object. This method only iterate through the first level of errors, the root cause errors (in error.Reasons) are not changed. 
+如果你想为结果中的所有错误添加一些信息，可以在结果对象上使用 `MapErrors(...)`。此方法只遍历第一层的错误，根因错误（位于 error.Reasons 中）不会被更改。
 
 ```csharp
 var result = Result.Fail("Error 1");
 var result2 = result.MapErrors(e => new Error("Prefix: " + e.Message));
 ```
 
-### Handling/catching errors
+### 处理/捕获错误
 
-Similar to the catch block for exceptions, the checking and handling of errors within Result object is also supported using some methods: 
+与异常的 catch 块类似，Result 对象内部的错误检查与处理也通过一些方法得到支持：
 
 ```csharp
 // check if the Result object contains an error from a specific type
@@ -498,11 +498,11 @@ result.HasError(error => error.HasMetadataKey("MyKey"));
 result.HasError(error => error.HasMetadata("MyKey", metadataValue => (string)metadataValue == "MyValue")); 
 ```
 
-All ```HasError()``` methods have an optional out parameter result to access the found errorors. 
+所有 ```HasError()``` 方法都有一个可选的 out 参数 result，用于访问找到的错误。
 
-### Handling successes
+### 处理成功
 
-Checking if a result object contains a specific success object can be done with the method `HasSuccess()`
+检查结果对象是否包含特定的成功对象可以通过方法 `HasSuccess()` 完成
 
 ```csharp
 // check if the Result object contains a success from a specific type
@@ -512,11 +512,11 @@ result.HasSuccess<MyCustomSuccess>();
 result.HasSuccess<MyCustomSuccess>(success => success.MyField == 3);
 ```
 
-All ```HasSuccess()``` methods have an optional out parameter result to access the found successes. 
+所有 ```HasSuccess()``` 方法都有一个可选的 out 参数 result，用于访问找到的成功项。
 
-### Handling/catching exceptions
+### 处理/捕获异常
 
-Checking if a result object contains an error with an specific exception type can be done with the method `HasException()`
+检查结果对象是否包含具有特定异常类型的错误可以通过方法 `HasException()` 完成
 
 ```csharp
 // check if the Result object contains an exception from a specific type
@@ -526,9 +526,9 @@ result.HasException<MyCustomException>();
 result.HasException<MyCustomException>(MyCustomException => MyCustomException.MyField == 1);
 ```
 
-All ```HasException()``` methods have an optional out parameter result to access the found error. 
+所有 ```HasException()``` 方法都有一个可选的 out 参数 result，用于访问找到的错误。
 
-### Pattern Matching
+### 模式匹配
 
 ```csharp
 var result = Result.Fail<int>("Error 1");
@@ -541,7 +541,7 @@ var outcome = result switch
 };
 ```
 
-### Golang-style Deconstruct Operators
+### Golang 风格的解构运算符
 
 ```csharp
 // For Result<TValue> you get TValue and Errors
@@ -555,9 +555,9 @@ var (isSuccess, errors) = Result.Fail("Failure 1");
 var (isSuccess, errors) = Result.Ok();
 ```
 
-### Logging
+### 日志
 
-Sometimes it is necessary to log results. First create a logger:
+有时需要记录结果的日志。首先创建一个日志记录器：
 
 ```csharp
 public class MyConsoleLogger : IResultLogger
@@ -574,7 +574,7 @@ public class MyConsoleLogger : IResultLogger
 }
 ```
 
-Then you must register your logger in the Result settings:
+然后你必须在 Result 设置中注册你的日志记录器：
 
 ```csharp
 var myLogger = new MyConsoleLogger();
@@ -583,14 +583,14 @@ Result.Setup(cfg => {
 });
 ```
 
-Finally the logger can be used on any result:
+最后，日志记录器可用于任何结果：
 
 ```csharp
 var result = Result.Fail("Operation failed")
     .Log();
 ```
 
-Additionally, a context can be passed in form of a string or of a generic type parameter. A custom message that provide more information can also be passed as content.
+此外，还可以以字符串或泛型类型参数的形式传入上下文。也可以将提供更多信息的自定义消息作为内容传入。
 
 ```csharp
 var result = Result.Fail("Operation failed")
@@ -600,13 +600,13 @@ var result2 = Result.Fail("Operation failed")
     .Log<MyLoggerContext>("More info about the result");
 ```
 
-It's also possible to specify the desired log level:
+也可以指定所需的日志级别：
 ```csharp
 var result = Result.Ok().Log(LogLevel.Debug);
 var result = Result.Fail().Log<MyContext>("Additional context", LogLevel.Error);
 ```
 
-You can also log results only on successes or failures:
+你也可以仅在成功或失败时记录结果日志：
 
 ```csharp
 Result<int> result = DoSomething();
@@ -619,68 +619,68 @@ result.LogIfFailed();
 ```
 
 
-### Asserting FluentResult objects
+### 断言 FluentResult 对象
 
-Try it with the power of FluentAssertions and [FluentResults.Extensions.FluentAssertions](https://github.com/altmann/FluentResults/wiki#fluentresultsextensionsfluentassertions). Since v2.0 the assertion package is out of the experimental phase and its really a great enhancement to assert result objects in a fluent way. 
+试试 FluentAssertions 与 [FluentResults.Extensions.FluentAssertions](https://github.com/altmann/FluentResults/wiki#fluentresultsextensionsfluentassertions) 的强大能力。自 v2.0 起，断言包已走出实验阶段，它确实是以流式方式断言结果对象的绝佳增强。
 
-### .NET Targeting
+### .NET 目标框架
 
-FluentResults 3.x and above supports .NET Standard 2.0 and .NET Standard 2.1. 
-If you need support for .NET Standard 1.1, .NET 4.6.1 or .NET 4.5 use [FluentResults 2.x](https://www.nuget.org/packages/FluentResults/2.6.0).
+FluentResults 3.x 及以上版本支持 .NET Standard 2.0 和 .NET Standard 2.1。
+如果你需要支持 .NET Standard 1.1、.NET 4.6.1 或 .NET 4.5，请使用 [FluentResults 2.x](https://www.nuget.org/packages/FluentResults/2.6.0)。
 
-## Samples/Best Practices
+## 示例/最佳实践
 
-Here are some samples and best practices to be followed while using FluentResult or the Result pattern in general with some famous or commonly used frameworks and libraries.
+以下是一些示例和最佳实践，供在使用 FluentResult 或通常的 Result 模式搭配著名或常用框架和库时参考遵循。
 
-### Powerful domain model inspired by Domain Driven Design
+### 受领域驱动设计启发的强大领域模型
 
-- [Domain model with a command handler](https://github.com/altmann/FluentResults/tree/master/src/FluentResults.Samples/DomainDrivenDesign)
-- Protecting domain invariants by using for example factory methods returning a Result object
-- Make each error unique by making your own custom Error classes inheriting from IError interface or Error class
-- If the method doesn't have a failure scenario then don't use the Result class as return type
-- Be aware that you can merge multiple failed results or return the first failed result asap
+- [带命令处理器的领域模型](https://github.com/altmann/FluentResults/tree/master/src/FluentResults.Samples/DomainDrivenDesign)
+- 通过使用例如返回 Result 对象的工厂方法来保护领域不变量
+- 通过创建继承自 IError 接口或 Error 类的自定义 Error 类，使每个错误唯一
+- 如果方法没有失败场景，则不要使用 Result 类作为返回类型
+- 请注意，你可以合并多个失败结果，或尽快返回第一个失败结果
 
-### Serializing Result objects (ASP.NET WebApi, [Hangfire](https://www.hangfire.io/))
+### 序列化 Result 对象（ASP.NET WebApi、[Hangfire](https://www.hangfire.io/)）
 
 - [Asp.net WebController](https://github.com/altmann/FluentResults/tree/master/src/FluentResults.Samples/WebController)
-- [Hangfire Job](https://github.com/altmann/FluentResults/tree/master/src/FluentResults.Samples/HangfireJobs)
-- Don't serialize FluentResult result objects. 
-- Make your own custom ResultDto class for your public api in your system boundaries
-  - So you can control which data is submitted and which data is serialized
-  - Your public api is independent of third party libraries like FluentResults
-  - You can keep your public api stable
+- [Hangfire 作业](https://github.com/altmann/FluentResults/tree/master/src/FluentResults.Samples/HangfireJobs)
+- 不要序列化 FluentResult 结果对象。
+- 在系统边界内为你的公共 API 创建你自己的自定义 ResultDto 类
+  - 这样你可以控制哪些数据被提交、哪些数据被序列化
+  - 你的公共 API 独立于 FluentResults 等第三方库
+  - 你可以保持公共 API 稳定
 
-### [MediatR](https://github.com/jbogard/MediatR) request handlers returning Result objects
+### [MediatR](https://github.com/jbogard/MediatR) 请求处理器返回 Result 对象
 
-- [Full functional .NET Core sample code with commands/queries and a ValidationPipelineBehavior](https://github.com/altmann/FluentResults/tree/master/src/FluentResults.Samples.MediatR)
-- Returns business validation errors via a Result object from a MediatR request handler back to the consumer
-- Don't throw exceptions based on business validation errors
-- Inject command and query validation via MediatR PipelineBehavior and return a Result object instead of throwing an exception
+- [包含命令/查询和 ValidationPipelineBehavior 的完整功能性 .NET Core 示例代码](https://github.com/altmann/FluentResults/tree/master/src/FluentResults.Samples.MediatR)
+- 通过 Result 对象将业务验证错误从 MediatR 请求处理器返回给调用方
+- 不要基于业务验证错误抛出异常
+- 通过 MediatR PipelineBehavior 注入命令和查询验证，并返回 Result 对象而不是抛出异常
 
-## Interesting Resources about Result Pattern
+## 关于 Result 模式的有趣资源
 
-- [Error Handling — Returning Results by Michael Altmann](https://medium.com/@michael_altmann/error-handling-returning-results-2b88b5ea11e9)
-- [Operation Result Pattern by Carl-Hugo Marcotte](https://www.forevolve.com/en/articles/2018/03/19/operation-result/)
-- [Exceptions for flow control in C# by Vladimir Khorikov](https://enterprisecraftsmanship.com/posts/exceptions-for-flow-control/)
-- [Error handling: Exception or Result? by Vladimir Khorikov](https://enterprisecraftsmanship.com/posts/error-handling-exception-or-result/)
-- [What is an exceptional situation in code? by Vladimir Khorikov](https://enterprisecraftsmanship.com/posts/what-is-exceptional-situation/)
-- [Advanced error handling techniques by Vladimir Khorikov](https://enterprisecraftsmanship.com/posts/advanced-error-handling-techniques/)
-- [A Simple Guide by Isaac Cummings](https://medium.com/@cummingsi1993/the-operation-result-pattern-a-simple-guide-fe10ff959080)
-- [Flexible Error Handling w/ the Result Class by Khalil Stemmler](https://khalilstemmler.com/articles/enterprise-typescript-nodejs/handling-errors-result-class/)
-- [Combining ASP.NET Core validation attributes with Value Objects by Vladimir Khorikov](https://enterprisecraftsmanship.com/posts/combining-asp-net-core-attributes-with-value-objects/)
+- [错误处理 — 返回结果，作者 Michael Altmann](https://medium.com/@michael_altmann/error-handling-returning-results-2b88b5ea11e9)
+- [操作结果模式，作者 Carl-Hugo Marcotte](https://www.forevolve.com/en/articles/2018/03/19/operation-result/)
+- [C# 中用于流程控制的异常，作者 Vladimir Khorikov](https://enterprisecraftsmanship.com/posts/exceptions-for-flow-control/)
+- [错误处理：异常还是结果？作者 Vladimir Khorikov](https://enterprisecraftsmanship.com/posts/error-handling-exception-or-result/)
+- [代码中什么是异常情况？作者 Vladimir Khorikov](https://enterprisecraftsmanship.com/posts/what-is-exceptional-situation/)
+- [高级错误处理技术，作者 Vladimir Khorikov](https://enterprisecraftsmanship.com/posts/advanced-error-handling-techniques/)
+- [简明指南，作者 Isaac Cummings](https://medium.com/@cummingsi1993/the-operation-result-pattern-a-simple-guide-fe10ff959080)
+- [使用 Result 类的灵活错误处理，作者 Khalil Stemmler](https://khalilstemmler.com/articles/enterprise-typescript-nodejs/handling-errors-result-class/)
+- [将 ASP.NET Core 验证特性与值对象结合，作者 Vladimir Khorikov](https://enterprisecraftsmanship.com/posts/combining-asp-net-core-attributes-with-value-objects/)
 
-## Donate
+## 捐赠
 
-I love this project but implementing features, answering issues or maintaining ci/release pipelines takes time - this is my freetime. If you like FluentResult and you find it useful, consider making a donation. Click on the sponsor button on the top right side. 
+我喜欢这个项目，但实现功能、回复 issue 或维护 CI/发布流水线都需要时间——这是我的业余时间。如果你喜欢 FluentResult 并且觉得它有用，可以考虑捐赠。点击右上角的赞助按钮。
 
-## Contributors
+## 贡献者
 
-Thanks to all the contributers and to all the people who gave feedback!
+感谢所有贡献者以及所有提供反馈的人！
 
 <a href="https://github.com/altmann/fluentresults/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=altmann/fluentresults" />
 </a>
 
-## Copyright
+## 版权
 
-Copyright (c) Michael Altmann. See [LICENSE](https://raw.githubusercontent.com/altmann/FluentResults/master/LICENSE) for details.
+版权所有 (c) Michael Altmann。详情参见 [LICENSE](https://raw.githubusercontent.com/altmann/FluentResults/master/LICENSE)。
