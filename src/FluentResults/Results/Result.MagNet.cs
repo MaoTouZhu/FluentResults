@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 // ReSharper disable once CheckNamespace
 namespace FluentResults
@@ -50,5 +51,12 @@ namespace FluentResults
         /// </summary>
         public static implicit operator Exception(Result result)
             => ResultHelper.ToException(result);
+
+        /// <summary>
+        ///     Merges this result with the given results into one result.
+        /// </summary>
+        /// <param name="results">The results to merge with this result</param>
+        public Result Merge(params IResultBase[] results)
+            => Result.Merge(new ResultBase[] { this }.Concat(results.OfType<ResultBase>()).ToArray());
     }
 }
