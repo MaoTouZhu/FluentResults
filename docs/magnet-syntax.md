@@ -20,7 +20,7 @@
 | `Result r = true;` / `false` | 成功 / 失败 | MAG-003 |
 | `if (r)` / `bool b = r;` | `IsSuccess` | MAG-004 |
 | `throw r;` / `Exception e = r;` | 取异常并抛出 | MAG-006 |
-| `r.ErrorMessage` | 首条错误消息 | MAG-008a |
+| `r.ErrorMessage` | 所有错误消息用 `"; "` 拼接 | MAG-008a |
 | `r.ThrowIfFailed();` / `r.Throw();` | 失败时抛异常 | MAG-010 |
 | `"boom".ToError();` / `ex.ToError();` | 失败结果 | MAG-013a |
 | `Result.DefaultErrorMessage` / `Result.DefaultError` | 默认文案 / 默认异常 | MAG-014 |
@@ -98,11 +98,11 @@ Exception e = failed;        // 普通错误每次按消息新建 Exception
 ```csharp
 Result.Ok().ErrorMessage;                        // null
 Result.Fail("a").ErrorMessage;                   // "a"
-Result.Fail(new[] { "a", "b" }).ErrorMessage;    // "a"（首条）
+Result.Fail(new[] { "a", "b" }).ErrorMessage;    // "a; b"
 ```
 
 - 只读视图，不改 `Errors` / `Reasons`。
-- 多错误只取首条；需要全部时用 `Errors`。
+- 多错误按 `"; "` 拼接；需要结构化访问时用 `Errors`。
 
 ### 2.6 `Throw` / `ThrowIfFailed`
 
@@ -346,7 +346,7 @@ MAG-003 -> MagNetConversionTests.Bool_literal_maps_to_success_or_failure
 MAG-004 -> MagNetConversionTests.Result_to_bool_returns_IsSuccess
 MAG-006 -> MagNetConversionTests.Result_to_exception_prefers_exceptional_error
 MAG-007 -> MagNetConversionTests.Value_result_to_plain_keeps_reasons
-MAG-008a -> MagNetReadTests.ErrorMessage_returns_first_error_message
+MAG-008a -> MagNetReadTests.ErrorMessage_joins_all_error_messages
 MAG-010 -> MagNetThrowTests.ThrowIfFailed_throws_only_on_failure
 MAG-013a -> MagNetConversionTests.ToError_extensions_create_failures
 MAG-014 -> MagNetDefaultsTests.DefaultError_is_singleton

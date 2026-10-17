@@ -23,6 +23,14 @@ namespace FluentResults.Test
         }
 
         [Fact]
+        public void ThrowIfFailed_joins_all_error_messages()
+        {
+            Action act = () => Result.Fail("first").WithError("second").ThrowIfFailed();
+
+            act.Should().Throw<Exception>().WithMessage("first; second");
+        }
+
+        [Fact]
         public void ThrowIfFailed_rethrows_original_exception()
         {
             var exception = new InvalidOperationException("boom");

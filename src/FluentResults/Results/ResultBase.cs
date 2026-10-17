@@ -68,9 +68,9 @@ namespace FluentResults
         public IReadOnlyList<ISuccess> Successes => Reasons.OfType<ISuccess>().ToList().AsReadOnly();
 
         /// <summary>
-        /// 第一条错误消息；如果结果没有错误，则为 null
+        /// 所有错误消息按 "; " 拼接；如果结果没有错误，则为 null
         /// </summary>
-        public string ErrorMessage => Reasons.OfType<IError>().Select(error => error.Message).FirstOrDefault();
+        public string ErrorMessage => ResultHelper.GetErrorMessage(this);
 
         /// <summary>
         /// 默认构造函数

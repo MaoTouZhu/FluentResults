@@ -113,6 +113,15 @@ namespace FluentResults
             return false;
         }
 
+        public static string GetErrorMessage(IResultBase result)
+        {
+            if (result == null)
+                return null;
+
+            var messages = result.Errors.Select(error => error.Message).ToList();
+            return messages.Count == 0 ? null : string.Join("; ", messages);
+        }
+
         public static Exception ToException(IResultBase result)
         {
             if (result == null)
@@ -123,10 +132,7 @@ namespace FluentResults
                 return exceptionalError.Exception;
 
             if (result.IsFailed)
-            {
-                var message = result.Errors.Select(error => error.Message).FirstOrDefault();
-                return new Exception(message ?? Result.DefaultErrorMessage);
-            }
+                return new Exception(GetErrorMessage(result) ?? Result.DefaultErrorMessage);
 
             return Result.DefaultError;
         }
