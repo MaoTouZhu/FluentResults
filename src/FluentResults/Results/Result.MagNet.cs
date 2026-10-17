@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 // ReSharper disable once CheckNamespace
 namespace FluentResults
@@ -50,5 +51,12 @@ namespace FluentResults
         /// </summary>
         public static implicit operator Exception(Result result)
             => ResultHelper.ToException(result);
+
+        /// <summary>
+        ///     将当前结果与其它结果合并为一个结果对象。
+        /// </summary>
+        /// <param name="results">要合并的其它结果</param>
+        public Result Merge(params IResultBase[] results)
+            => Result.Merge(new ResultBase[] { this }.Concat(results.OfType<ResultBase>()).ToArray());
     }
 }

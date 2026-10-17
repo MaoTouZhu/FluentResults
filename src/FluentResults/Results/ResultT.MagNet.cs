@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 // ReSharper disable once CheckNamespace
 namespace FluentResults
@@ -49,5 +51,12 @@ namespace FluentResults
         /// </summary>
         public static implicit operator Result(Result<TValue> result)
             => result == null ? null : result.ToResult();
+
+        /// <summary>
+        ///     将当前结果与其它结果合并为一个包含值列表的结果对象。
+        /// </summary>
+        /// <param name="results">要合并的其它结果</param>
+        public Result<IEnumerable<TValue>> Merge(params Result<TValue>[] results)
+            => Result.Merge(new[] { this }.Concat(results).ToArray());
     }
 }
