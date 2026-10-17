@@ -263,7 +263,7 @@ namespace FluentResults
     ///     A result containing a value of type <typeparamref name="TValue" />
     /// </summary>
     /// <typeparam name="TValue">The type of the value</typeparam>
-    public class Result<TValue> : ResultBase<Result<TValue>>, IResult<TValue>
+    public partial class Result<TValue> : ResultBase<Result<TValue>>, IResult<TValue>
     {
         /// <summary>
         ///     Default constructor
@@ -284,13 +284,13 @@ namespace FluentResults
         {
             get
             {
-                ThrowIfFailed();
+                ThrowIfValueUnavailable();
 
                 return ValueOrDefault;
             }
             private set
             {
-                ThrowIfFailed();
+                ThrowIfValueUnavailable();
 
                 ValueOrDefault = value;
             }
@@ -602,7 +602,7 @@ namespace FluentResults
             errors = IsFailed ? Errors.ToList() : default;
         }
 
-        private void ThrowIfFailed()
+        private void ThrowIfValueUnavailable()
         {
             if (IsFailed)
                 throw new InvalidOperationException(

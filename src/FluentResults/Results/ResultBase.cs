@@ -68,6 +68,11 @@ namespace FluentResults
         public IReadOnlyList<ISuccess> Successes => Reasons.OfType<ISuccess>().ToList().AsReadOnly();
 
         /// <summary>
+        /// Message of the first error; null if the result has no errors
+        /// </summary>
+        public string ErrorMessage => Reasons.OfType<IError>().Select(error => error.Message).FirstOrDefault();
+
+        /// <summary>
         /// Default constructor
         /// </summary>
         protected ResultBase()
@@ -431,6 +436,26 @@ namespace FluentResults
                 return Log<TContext>(content, logLevel);
 
             return (TResult)this;
+        }
+
+        /// <summary>
+        /// Throws the exception represented by this result.
+        /// The first <see cref="IExceptionalError"/> keeps its original exception; otherwise the first
+        /// error message is wrapped in an <see cref="Exception"/>; a successful result throws
+        /// <see cref="Result.DefaultError"/>.
+        /// </summary>
+        public void Throw()
+        {
+            throw ResultHelper.ToException(this);
+        }
+
+        /// <summary>
+        /// Throws only when the result is failed. See <see cref="Throw"/>.
+        /// </summary>
+        public void ThrowIfFailed()
+        {
+            if (IsFailed)
+                Throw();
         }
 
         /// <summary>

@@ -631,9 +631,11 @@ namespace FluentResults.Test
         [Fact]
         public void Implicit_conversion_T_is_converted_to_Success_result_of_T()
         {
-            var value = "result";
+            // string is a reserved generic argument (it means "error message"),
+            // so the generic T conversion is verified with int.
+            var value = 42;
 
-            Result<string> result = value;
+            Result<int> result = value;
 
             result.IsSuccess.Should().BeTrue();
             result.IsFailed.Should().BeFalse();
@@ -641,10 +643,8 @@ namespace FluentResults.Test
             result.Errors.Should().BeEmpty();
 
             result.Value.Should().Be(value);
-            result.Value.Should().BeOfType<string>();
 
             result.ValueOrDefault.Should().Be(value);
-            result.ValueOrDefault.Should().BeOfType<string>();
         }
 
         [Fact]

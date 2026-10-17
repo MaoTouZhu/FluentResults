@@ -112,5 +112,23 @@ namespace FluentResults
             result = Array.Empty<TSuccess>();
             return false;
         }
+
+        public static Exception ToException(IResultBase result)
+        {
+            if (result == null)
+                return Result.DefaultError;
+
+            var exceptionalError = result.Errors.OfType<IExceptionalError>().FirstOrDefault();
+            if (exceptionalError != null && exceptionalError.Exception != null)
+                return exceptionalError.Exception;
+
+            if (result.IsFailed)
+            {
+                var message = result.Errors.Select(error => error.Message).FirstOrDefault();
+                return new Exception(message ?? Result.DefaultErrorMessage);
+            }
+
+            return Result.DefaultError;
+        }
     }
 }
