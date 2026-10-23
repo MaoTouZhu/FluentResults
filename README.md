@@ -129,6 +129,31 @@ result.ThrowIfFailed();
 Result merged = result.Merge(other);
 ```
 
+在方法中，这样就不必显式调用 `Result.Ok` / `Result.Fail` 就能返回成功或失败：
+
+```csharp
+public Result Validate(Order order)
+{
+    if (order is null)
+        return "订单不能为空";                                     // 字符串 → 失败
+
+    if (order.Items.Count == 0)
+        return new InvalidOperationException("订单中没有明细");      // 异常 → 失败
+
+    return true;                                                    // bool → 成功
+}
+
+public Result<Customer> GetCustomer(int id)
+{
+    var customer = _repository.Find(id);
+
+    if (customer is null)
+        return $"未找到客户 {id}";                                  // 字符串 → 失败
+
+    return customer;                                                // T → 成功
+}
+```
+
 隐式转换如下：
 
 | 从 | 到 | 语义 |
