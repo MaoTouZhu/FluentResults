@@ -93,6 +93,56 @@ public Result<Task> GetTask()
 }
 ```
 
+## Added Syntax Sugar
+
+> This is an experimental, branch-specific addition. See [docs/magnet-syntax.md](docs/magnet-syntax.md) for the full contract and known limitations.
+
+On top of the regular FluentResults API, this branch adds MagNet-style implicit conversions and helpers:
+
+```csharp
+// a string or an exception turns into a failure
+Result failed = "boom";
+Result failedByException = new InvalidOperationException("boom");
+
+// a bool turns into success or failure
+Result ok = true;
+
+// truthiness and throw syntax
+if (result) { /* ... */ }
+throw failed;
+
+// Result<T> can be created from a failure message and read as a value
+Result<int> valueResult = "boom";   // failed, ValueOrDefault == 0
+int value = valueResult;            // 0 when failed
+
+// explicit helper methods
+Result a = "boom".ToError();
+Result<int> b = new InvalidOperationException("boom").ToError<int>();
+
+// all error messages joined with the current platform's newline character
+string message = result.ErrorMessage;
+
+// throw only when the result failed
+result.ThrowIfFailed();
+
+// merge reasons with another result
+Result merged = result.Merge(other);
+```
+
+The implicit conversions are:
+
+| From | To | Semantics |
+| --- | --- | --- |
+| `string` | `Result` / `Result<T>` | failure with the string as error message |
+| `Exception` | `Result` / `Result<T>` | failure with an `ExceptionalError` that keeps the original exception |
+| `bool` | `Result` | `true` → success, `false` → failure |
+| `Result` / `Result<T>` | `bool` | `IsSuccess` |
+| `Result` / `Result<T>` | `Exception` | the original exception when present, otherwise a new exception built from `ErrorMessage` |
+| `Result<T>` | `T` | `ValueOrDefault` (`default` when the result failed) |
+| `Result<T>` | `Result` | drops the value, keeps the reasons |
+
+`Result.DefaultErrorMessage` (`"Undefined error"`) and `Result.DefaultError` are used as fallbacks for `null` and `false` conversions. The types `string`, `Exception` and `bool` are reserved for this sugar, so `Result<string>`, `Result<Exception>` and `Result<bool>` do not support every implicit conversion direction and may produce compiler error CS0457. Use `ValueOrDefault` and `IsSuccess` explicitly for those types.
+
 ## Processing a Result
 
 After you get a Result object from a method you have to process it. This means, you have to check if the operation was completed successfully or not. The properties `IsSuccess` and `IsFailed` in the Result object indicate success or failure. The value of a `Result<T>` can be accessed via the properties `Value` and `ValueOrDefault`.
