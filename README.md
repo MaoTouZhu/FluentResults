@@ -129,6 +129,31 @@ result.ThrowIfFailed();
 Result merged = result.Merge(other);
 ```
 
+In methods this lets you return success and failure values without calling `Result.Ok` / `Result.Fail` explicitly:
+
+```csharp
+public Result Validate(Order order)
+{
+    if (order is null)
+        return "Order must not be null";                             // string → failure
+
+    if (order.Items.Count == 0)
+        return new InvalidOperationException("Order has no items");  // exception → failure
+
+    return true;                                                     // bool → success
+}
+
+public Result<Customer> GetCustomer(int id)
+{
+    var customer = _repository.Find(id);
+
+    if (customer is null)
+        return $"Customer {id} was not found";                       // string → failure
+
+    return customer;                                                 // T → success
+}
+```
+
 The implicit conversions are:
 
 | From | To | Semantics |
