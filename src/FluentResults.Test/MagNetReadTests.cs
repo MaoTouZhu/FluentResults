@@ -22,9 +22,11 @@ namespace FluentResults.Test
         [Fact]
         public void ErrorMessage_joins_all_error_messages()
         {
-            Result.Fail(new[] { "first", "second" }).ErrorMessage.Should().Be("first; second");
-            Result.Fail<int>(new[] { "first", "second" }).ErrorMessage.Should().Be("first; second");
-            Result.Fail("first").WithError("second").ErrorMessage.Should().Be("first; second");
+            var newLine = System.Environment.NewLine;
+
+            Result.Fail(new[] { "first", "second" }).ErrorMessage.Should().Be($"first{newLine}second");
+            Result.Fail<int>(new[] { "first", "second" }).ErrorMessage.Should().Be($"first{newLine}second");
+            Result.Fail("first").WithError("second").ErrorMessage.Should().Be($"first{newLine}second");
         }
     }
 }

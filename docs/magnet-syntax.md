@@ -20,7 +20,7 @@
 | `Result r = true;` / `false` | 成功 / 失败 | MAG-003 |
 | `if (r)` / `bool b = r;` | `IsSuccess` | MAG-004 |
 | `throw r;` / `Exception e = r;` | 取异常并抛出 | MAG-006 |
-| `r.ErrorMessage` | 所有错误消息用 `"; "` 拼接 | MAG-008a |
+| `r.ErrorMessage` | 所有错误消息用当前平台换行符拼接 | MAG-008a |
 | `r.ThrowIfFailed();` / `r.Throw();` | 失败时抛异常 | MAG-010 |
 | `"boom".ToError();` / `ex.ToError();` | 失败结果 | MAG-013a |
 | `Result.DefaultErrorMessage` / `Result.DefaultError` | 默认文案 / 默认异常 | MAG-014 |
@@ -98,11 +98,12 @@ Exception e = failed;        // 普通错误每次按消息新建 Exception
 ```csharp
 Result.Ok().ErrorMessage;                        // null
 Result.Fail("a").ErrorMessage;                   // "a"
-Result.Fail(new[] { "a", "b" }).ErrorMessage;    // "a; b"
+Result.Fail(new[] { "a", "b" }).ErrorMessage;    // "a" + Environment.NewLine + "b"
 ```
 
 - 只读视图，不改 `Errors` / `Reasons`。
-- 多错误按 `"; "` 拼接；需要结构化访问时用 `Errors`。
+- 多错误按当前平台的换行符（`Environment.NewLine`，Windows 为 `\r\n`，
+  Linux/macOS 为 `\n`）拼接；需要结构化访问时用 `Errors`。
 
 ### 2.6 `Throw` / `ThrowIfFailed`
 

@@ -68,7 +68,7 @@ namespace FluentResults
         public IReadOnlyList<ISuccess> Successes => Reasons.OfType<ISuccess>().ToList().AsReadOnly();
 
         /// <summary>
-        /// Messages of all errors joined by "; "; null if the result has no errors
+        /// Messages of all errors joined by the current platform's newline character (<see cref="Environment.NewLine"/>); null if the result has no errors
         /// </summary>
         public string ErrorMessage => ResultHelper.GetErrorMessage(this);
 

@@ -27,7 +27,7 @@ namespace FluentResults.Test
         {
             Action act = () => Result.Fail("first").WithError("second").ThrowIfFailed();
 
-            act.Should().Throw<Exception>().WithMessage("first; second");
+            act.Should().Throw<Exception>().WithMessage($"first{Environment.NewLine}second");
         }
 
         [Fact]
