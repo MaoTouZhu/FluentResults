@@ -68,7 +68,7 @@ namespace FluentResults
         public IReadOnlyList<ISuccess> Successes => Reasons.OfType<ISuccess>().ToList().AsReadOnly();
 
         /// <summary>
-        /// 所有错误消息按 "; " 拼接；如果结果没有错误，则为 null
+        /// 所有错误消息按当前平台的换行符（<see cref="Environment.NewLine"/>）拼接；如果结果没有错误，则为 null
         /// </summary>
         public string ErrorMessage => ResultHelper.GetErrorMessage(this);
 
