@@ -119,7 +119,7 @@ namespace FluentResults
                 return null;
 
             var messages = result.Errors.Select(error => error.Message).ToList();
-            return messages.Count == 0 ? null : string.Join("; ", messages);
+            return messages.Count == 0 ? null : string.Join(Environment.NewLine, messages);
         }
 
         public static Exception ToException(IResultBase result)
