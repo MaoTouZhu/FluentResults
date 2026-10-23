@@ -93,6 +93,56 @@ public Result<Task> GetTask()
 }
 ```
 
+## 增加的语法糖
+
+> 这是实验性的分支专属增强。完整契约与已知限制见 [docs/magnet-syntax.md](docs/magnet-syntax.md)。
+
+在常规 FluentResults API 之上，本分支增加了 MagNet 风格的隐式转换和辅助方法：
+
+```csharp
+// 字符串或异常会变成失败结果
+Result failed = "boom";
+Result failedByException = new InvalidOperationException("boom");
+
+// bool 会转成成功或失败
+Result ok = true;
+
+// 真值判断与 throw 语法
+if (result) { /* ... */ }
+throw failed;
+
+// Result<T> 可以从失败消息创建，也可以当作值读取
+Result<int> valueResult = "boom";   // 失败，ValueOrDefault == 0
+int value = valueResult;            // 失败时得到 0
+
+// 显式辅助方法
+Result a = "boom".ToError();
+Result<int> b = new InvalidOperationException("boom").ToError<int>();
+
+// 所有错误消息按当前平台换行符拼接
+string message = result.ErrorMessage;
+
+// 仅在失败时抛出
+result.ThrowIfFailed();
+
+// 与另一个结果合并原因
+Result merged = result.Merge(other);
+```
+
+隐式转换如下：
+
+| 从 | 到 | 语义 |
+| --- | --- | --- |
+| `string` | `Result` / `Result<T>` | 失败，字符串作为错误消息 |
+| `Exception` | `Result` / `Result<T>` | 失败，保存在保留原异常的 `ExceptionalError` 中 |
+| `bool` | `Result` | `true` → 成功，`false` → 失败 |
+| `Result` / `Result<T>` | `bool` | `IsSuccess` |
+| `Result` / `Result<T>` | `Exception` | 有原异常时返回原异常，否则用 `ErrorMessage` 新建异常 |
+| `Result<T>` | `T` | `ValueOrDefault`（失败时为 `default`） |
+| `Result<T>` | `Result` | 丢弃值，保留原因 |
+
+`Result.DefaultErrorMessage`（`"Undefined error"`）和 `Result.DefaultError` 用作 `null` 与 `false` 转换的兜底。`string`、`Exception` 和 `bool` 这三个类型被保留给上述语法糖，因此 `Result<string>`、`Result<Exception>` 和 `Result<bool>` 并不支持所有隐式转换方向，可能产生编译器错误 CS0457。对这些类型请显式使用 `ValueOrDefault` 和 `IsSuccess`。
+
 ## 处理结果
 
 从方法获得 Result 对象后，你必须处理它。这意味着你需要检查操作是否成功完成。Result 对象中的属性 `IsSuccess` 和 `IsFailed` 表示成功或失败。`Result<T>` 的值可以通过属性 `Value` 和 `ValueOrDefault` 访问。
