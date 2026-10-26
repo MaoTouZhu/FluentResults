@@ -40,12 +40,6 @@ namespace FluentResults
             => isSuccess ? Ok() : Fail(DefaultErrorMessage);
 
         /// <summary>
-        ///     Implicit conversion of a <see cref="Result"/> to its success state.
-        /// </summary>
-        public static implicit operator bool(Result result)
-            => result != null && result.IsSuccess;
-
-        /// <summary>
         ///     Implicit conversion of a <see cref="Result"/> to the exception it represents.
         ///     A successful result yields <see cref="DefaultError"/>.
         /// </summary>

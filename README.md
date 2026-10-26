@@ -161,12 +161,22 @@ The implicit conversions are:
 | `string` | `Result` / `Result<T>` | failure with the string as error message |
 | `Exception` | `Result` / `Result<T>` | failure with an `ExceptionalError` that keeps the original exception |
 | `bool` | `Result` | `true` → success, `false` → failure |
-| `Result` / `Result<T>` | `bool` | `IsSuccess` |
 | `Result` / `Result<T>` | `Exception` | the original exception when present, otherwise a new exception built from `ErrorMessage` |
 | `Result<T>` | `T` | `ValueOrDefault` (`default` when the result failed) |
 | `Result<T>` | `Result` | drops the value, keeps the reasons |
 
-`Result.DefaultErrorMessage` (`"Undefined error"`) and `Result.DefaultError` are used as fallbacks for `null` and `false` conversions. The types `string`, `Exception` and `bool` are reserved for this sugar, so `Result<string>`, `Result<Exception>` and `Result<bool>` do not support every implicit conversion direction and may produce compiler error CS0457. Use `ValueOrDefault` and `IsSuccess` explicitly for those types.
+`Result` and `Result<T>` can also be used directly in boolean contexts via `operator true` / `operator false` / `operator !`:
+
+```csharp
+if (result) { /* IsSuccess */ }
+if (!result) { /* IsFailed */ }
+```
+
+There is **no implicit conversion to `bool`**, so `bool b = result;` does not compile. Use `result.IsSuccess` when a real `bool` value is needed.
+
+`Result.DefaultErrorMessage` (`"Undefined error"`) and `Result.DefaultError` are used as fallbacks for `null` and `false` conversions. The types `string` and `Exception` are reserved for this sugar, so `Result<string>` and `Result<Exception>` do not support every implicit conversion direction and may produce compiler error CS0457. Use `ValueOrDefault` and `IsSuccess` explicitly for those types. `Result<bool>` is no longer reserved: truthiness uses `operator true`/`false`, and value extraction uses the generic `T` conversion.
+
+Because `string` and `Exception` also convert implicitly to their base types, assigning a `string` or `Exception` to a `Result<T>` whose `T` is assignable from it (for example `Result<object>` or `Result<IComparable>`) produces a failed result, not a success with that value.
 
 ## Processing a Result
 

@@ -33,12 +33,6 @@ namespace FluentResults
             => result is null ? default : result.ValueOrDefault;
 
         /// <summary>
-        ///     Implicit conversion of a <see cref="Result{TValue}"/> to its success state.
-        /// </summary>
-        public static implicit operator bool(Result<TValue> result)
-            => result != null && result.IsSuccess;
-
-        /// <summary>
         ///     Implicit conversion of a <see cref="Result{TValue}"/> to the exception it represents.
         ///     A successful result yields <see cref="Result.DefaultError"/>.
         /// </summary>

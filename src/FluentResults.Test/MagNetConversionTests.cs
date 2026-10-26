@@ -59,13 +59,16 @@ namespace FluentResults.Test
         }
 
         [Fact]
-        public void Result_is_implicitly_convertible_to_bool()
+        public void Result_supports_truthiness()
         {
-            bool success = Result.Ok();
-            bool failure = Result.Fail("boom");
+            if (!Result.Ok())
+                throw new InvalidOperationException("expected success result to be truthy");
 
-            success.Should().BeTrue();
-            failure.Should().BeFalse();
+            if (Result.Fail("boom"))
+                throw new InvalidOperationException("expected failed result to be falsy");
+
+            (!Result.Ok()).Should().BeFalse();
+            (!Result.Fail("boom")).Should().BeTrue();
         }
 
         [Fact]
@@ -115,13 +118,16 @@ namespace FluentResults.Test
         }
 
         [Fact]
-        public void Value_result_is_implicitly_convertible_to_bool()
+        public void Value_result_supports_truthiness()
         {
-            bool success = Result.Ok(42);
-            bool failure = Result.Fail<int>("boom");
+            if (!Result.Ok(42))
+                throw new InvalidOperationException("expected success result to be truthy");
 
-            success.Should().BeTrue();
-            failure.Should().BeFalse();
+            if (Result.Fail<int>("boom"))
+                throw new InvalidOperationException("expected failed result to be falsy");
+
+            (!Result.Ok(42)).Should().BeFalse();
+            (!Result.Fail<int>("boom")).Should().BeTrue();
         }
 
         [Fact]
@@ -191,14 +197,27 @@ namespace FluentResults.Test
         }
 
         [Fact]
-        public void Bool_value_result_can_still_be_constructed_implicitly()
+        public void Bool_value_result_supports_truthiness_and_value_extraction()
         {
-            // Result<bool> is a reserved instantiation: construction still works via T -> Result<T>,
-            // but reading the value back (bool b = result) is ambiguous by design.
+            // Result<bool> is no longer ambiguous: truthiness uses operator true/false,
+            // value extraction uses the generic T conversion.
             Result<bool> result = true;
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Should().BeTrue();
+
+            bool value = result;
+            value.Should().BeTrue();
+
+            if (!result)
+                throw new InvalidOperationException("expected success result to be truthy");
+
+            Result<bool> failed = Result.Fail<bool>("boom");
+            if (failed)
+                throw new InvalidOperationException("expected failed result to be falsy");
+
+            bool failedValue = failed;
+            failedValue.Should().BeFalse();
         }
     }
 }

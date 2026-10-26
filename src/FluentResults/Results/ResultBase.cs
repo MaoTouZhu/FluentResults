@@ -73,6 +73,24 @@ namespace FluentResults
         public string ErrorMessage => ResultHelper.GetErrorMessage(this);
 
         /// <summary>
+        /// Evaluates the result in a boolean context: true when the result is successful
+        /// </summary>
+        public static bool operator true(ResultBase result)
+            => result != null && result.IsSuccess;
+
+        /// <summary>
+        /// Evaluates the result in a boolean context: true when the result is failed
+        /// </summary>
+        public static bool operator false(ResultBase result)
+            => result == null || result.IsFailed;
+
+        /// <summary>
+        /// Logical negation: true when the result is failed
+        /// </summary>
+        public static bool operator !(ResultBase result)
+            => result == null || result.IsFailed;
+
+        /// <summary>
         /// Default constructor
         /// </summary>
         protected ResultBase()
