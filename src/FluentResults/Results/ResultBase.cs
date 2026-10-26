@@ -73,6 +73,24 @@ namespace FluentResults
         public string ErrorMessage => ResultHelper.GetErrorMessage(this);
 
         /// <summary>
+        /// 在布尔上下文中求值：结果为成功时为 true
+        /// </summary>
+        public static bool operator true(ResultBase result)
+            => result != null && result.IsSuccess;
+
+        /// <summary>
+        /// 在布尔上下文中求值：结果为失败时为 true
+        /// </summary>
+        public static bool operator false(ResultBase result)
+            => result == null || result.IsFailed;
+
+        /// <summary>
+        /// 逻辑取反：结果为失败时为 true
+        /// </summary>
+        public static bool operator !(ResultBase result)
+            => result == null || result.IsFailed;
+
+        /// <summary>
         /// 默认构造函数
         /// </summary>
         protected ResultBase()

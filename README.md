@@ -161,12 +161,22 @@ public Result<Customer> GetCustomer(int id)
 | `string` | `Result` / `Result<T>` | 失败，字符串作为错误消息 |
 | `Exception` | `Result` / `Result<T>` | 失败，保存在保留原异常的 `ExceptionalError` 中 |
 | `bool` | `Result` | `true` → 成功，`false` → 失败 |
-| `Result` / `Result<T>` | `bool` | `IsSuccess` |
 | `Result` / `Result<T>` | `Exception` | 有原异常时返回原异常，否则用 `ErrorMessage` 新建异常 |
 | `Result<T>` | `T` | `ValueOrDefault`（失败时为 `default`） |
 | `Result<T>` | `Result` | 丢弃值，保留原因 |
 
-`Result.DefaultErrorMessage`（`"Undefined error"`）和 `Result.DefaultError` 用作 `null` 与 `false` 转换的兜底。`string`、`Exception` 和 `bool` 这三个类型被保留给上述语法糖，因此 `Result<string>`、`Result<Exception>` 和 `Result<bool>` 并不支持所有隐式转换方向，可能产生编译器错误 CS0457。对这些类型请显式使用 `ValueOrDefault` 和 `IsSuccess`。
+`Result` 和 `Result<T>` 还可以通过 `operator true` / `operator false` / `operator !` 直接用于布尔上下文：
+
+```csharp
+if (result) { /* 成功 */ }
+if (!result) { /* 失败 */ }
+```
+
+**没有到 `bool` 的隐式转换**，因此 `bool b = result;` 不能编译；需要真正的布尔值时用 `result.IsSuccess`。
+
+`Result.DefaultErrorMessage`（`"Undefined error"`）和 `Result.DefaultError` 用作 `null` 与 `false` 转换的兜底。`string` 和 `Exception` 这两个类型被保留给上述语法糖，因此 `Result<string>` 和 `Result<Exception>` 并不支持所有隐式转换方向，可能产生编译器错误 CS0457。对这些类型请显式使用 `ValueOrDefault` 和 `IsSuccess`。`Result<bool>` 不再保留：真值走 `operator true`/`false`，取值走泛型 `T` 转换。
+
+由于 `string` 和 `Exception` 也会隐式转换到它们的基类型，把字符串或异常赋给 `Result<object>`（或任意 `T` 可接收它们的 `Result<T>`）会得到失败结果，而不是带该值的成功结果。
 
 ## 处理结果
 

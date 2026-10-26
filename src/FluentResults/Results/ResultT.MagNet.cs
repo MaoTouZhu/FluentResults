@@ -33,12 +33,6 @@ namespace FluentResults
             => result is null ? default : result.ValueOrDefault;
 
         /// <summary>
-        ///     从 <see cref="Result{TValue}"/> 到其成功状态的隐式转换。
-        /// </summary>
-        public static implicit operator bool(Result<TValue> result)
-            => result != null && result.IsSuccess;
-
-        /// <summary>
         ///     从 <see cref="Result{TValue}"/> 到其表示的异常的隐式转换。
         ///     成功的结果会返回 <see cref="Result.DefaultError"/>。
         /// </summary>

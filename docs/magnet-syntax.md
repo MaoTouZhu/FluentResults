@@ -18,7 +18,7 @@
 | `Result r = "boom";` | 失败，`Error("boom")` | MAG-001 |
 | `Result r = ex;` | 失败，`ExceptionalError(ex)` | MAG-002 |
 | `Result r = true;` / `false` | 成功 / 失败 | MAG-003 |
-| `if (r)` / `bool b = r;` | `IsSuccess` | MAG-004 |
+| `if (r)` / `!r` | 布尔上下文（`operator true/false`） | MAG-004 |
 | `throw r;` / `Exception e = r;` | 取异常并抛出 | MAG-006 |
 | `r.ErrorMessage` | 所有错误消息用当前平台换行符拼接 | MAG-008a |
 | `r.ThrowIfFailed();` / `r.Throw();` | 失败时抛异常 | MAG-010 |
@@ -27,7 +27,7 @@
 | `Result<int> r = "boom";` | 失败，值 `default` | D-01 |
 | `Result<int> r = ex;` | 失败，值 `default` | D-02 |
 | `int v = r;` | `ValueOrDefault` | D-03 |
-| `if (r)` / `bool ok = r;` | `IsSuccess` | D-04 |
+| `if (r)` / `!r` | 布尔上下文（`operator true/false`） | D-04 |
 | `throw r;` / `Exception e = r;` | 取异常并抛出 | D-05 |
 | `Result plain = r;` | 丢弃 `Value`，保留 `Reasons` | MAG-007 |
 
@@ -64,11 +64,11 @@ bool sameInstance = ((IExceptionalError)r.Errors[0]).Exception == ex;  // true
 Result ok   = true;    // 成功
 Result fail = false;   // 失败，ErrorMessage == Result.DefaultErrorMessage
 
-bool b = fail;         // false
-if (ok) { }            // 可用
+if (ok) { }            // true
+if (!fail) { }         // true
 ```
 
-**不提供 `bool → Result<T>`**。`Result<bool> rb = true` 走的是已有 `T → Result<T>`（成功），不是这里。
+**不提供 `bool → Result<T>`**，也**不再提供 `Result → bool` 的隐式转换**。`Result<bool> rb = true` 走的是已有 `T → Result<T>`（成功），不是这里；需要真正的 `bool` 值时用 `rb.IsSuccess` / `rb.ValueOrDefault`。
 
 ### 2.4 真值、取异常与 `throw`
 
@@ -76,7 +76,8 @@ if (ok) { }            // 可用
 Result failed = Result.Fail("boom");
 
 if (failed) { }              // false
-bool ok = Result.Ok();       // true
+if (Result.Ok()) { }         // true
+if (!Result.Ok()) { }        // false
 
 throw failed;                // 抛出 Exception("boom")
 Exception e = failed;        // 普通错误每次按消息新建 Exception
@@ -171,18 +172,18 @@ int c = Result.Fail<int>("boom").Value; // 抛 InvalidOperationException
 - 隐式转换使用 **`ValueOrDefault`**：失败时静默给 `default`。
 - 需要失败即抛时，显式访问 `.Value`。
 
-### 3.4 `Result<T>` → `bool`
+### 3.4 `Result<T>` 的布尔上下文
 
 ```csharp
 Result<int> r = Result.Ok(42);
 
-if (r) { }              // IsSuccess == true
-bool ok = r;           // true
-bool bad = Result.Fail<int>("x"); // false
+if (r) { }                        // true
+if (!Result.Fail<int>("x")) { }   // true
 ```
 
-- 单向：`bool → Result<T>` 不存在。
-- `Result<bool>` 例外，见第 5 节。
+- 使用 `operator true` / `operator false` / `operator !`，不提供 implicit `bool`。
+- `bool b = r;` 不再编译；需要真正的 `bool` 时用 `r.IsSuccess`。
+- `Result<bool>` 不再特殊，可以直接 `if (r)`，也可以 `bool v = r;`（走 `T` 取值）。
 
 ### 3.5 `Result<T>` → `Exception`
 
@@ -215,24 +216,24 @@ Result<int> back = plain;      // 成功，ValueOrDefault == 0（已有 Result �
 
 ## 4. 保留类型（重要）
 
-`string`、`Exception`、`bool` 作为 `T` 时，**构造/取值方向上的隐式转换是有意二义的**：
-这些类型被保留给语法糖，代价是 `Result<string>` / `Result<Exception>` / `Result<bool>`
-不参与对应的隐式转换。
+`string`、`Exception` 作为 `T` 时，**构造/取值方向上的隐式转换是有意二义的**：
+这些类型被保留给语法糖，代价是 `Result<string>` / `Result<Exception>`
+不参与对应的隐式转换。`bool` **不再是保留类型**：真值走 `operator true/false`，取值走 `T` 转换。
 
 | ID | 关系 |
 | --- | --- |
 | D-01 | `string → Result<T>`（失败） |
 | D-02 | `Exception → Result<T>`（失败） |
 | D-03 | `Result<T> → T`（`ValueOrDefault`） |
-| D-04 | `Result<T> → bool`（`IsSuccess`，单向） |
+| D-04 | `operator true/false`（`if` / `!`，不是隐式转换） |
 | D-05 | `Result<T> → Exception`（`throw` 糖） |
 
 | 写法 | `Result<string>` | `Result<Exception>` | `Result<bool>` |
 | --- | --- | --- | --- |
 | `Result<T> r = value;` | ❌ CS0457 | ❌ CS0457 | ✅（`T→Result<T>`） |
-| `T v = r;` | ✅ | ❌ CS0457（D-03 vs D-05） | ❌ CS0457（D-03 vs D-04） |
-| `bool b = r;` | ✅ | ✅ | ❌ CS0457 |
-| `if (r)` | ✅ | ✅ | ❌ CS0457 |
+| `T v = r;` | ✅ | ❌ CS0457（D-03 vs D-05） | ✅ |
+| `bool b = r;` | ❌ CS0029（无 bool 转换） | ❌ CS0029（无 bool 转换） | ✅（`T` 取值） |
+| `if (r)` | ✅ | ✅ | ✅ |
 | `Exception e = r;` | ✅ | ❌ CS0457 | ✅ |
 | `throw r;` | ✅ | ❌ CS0457 | ✅ |
 
@@ -249,7 +250,8 @@ Exception e = b.ValueOrDefault;          // 不用隐式取值
 
 // Result<bool>
 Result<bool> c = true;                   // 构造可以（T→Result<T>）
-bool ok = c.IsSuccess;                   // 不用隐式取值 / if
+if (c) { }                               // 真值：operator true
+bool value = c;                          // 取值：T 转换
 bool val = c.ValueOrDefault;
 ```
 
@@ -272,13 +274,15 @@ int f = d;
 if (d) { }
 Result plain = d;
 
-// ❌ 保留类型
+// ❌ 保留类型（string / Exception）
 Result<string> g = "boom";                  // CS0457
 Result<Exception> h = new Exception("x");   // CS0457
-Result<bool> i = true;                      // ✅ 构造成功
-bool j = i;                                 // CS0457
-if (i) { }                                  // CS0457
 Exception k = h;                            // CS0457
+
+// ✅ Result<bool> 不再二义
+Result<bool> i = true;
+bool j = i;                                 // T 取值
+if (i) { }                                  // operator true
 ```
 
 ---
@@ -287,12 +291,13 @@ Exception k = h;                            // CS0457
 
 | 现象 | 原因 | 规避 |
 | --- | --- | --- |
-| `Console.WriteLine(result)` 输出 `True` / `False` | 重载绑定到 `WriteLine(bool)` | 显式 `result.ToString()` |
-| `Console.WriteLine(resultInt)` 会 CS0121 | `Result<int>→int` 与 `→bool` 两个重载都适用（实测） | 先取 `ValueOrDefault` 或 `ToString()` |
+| `bool b = result;` CS0029 | 只有 `operator true/false`，没有 implicit `bool` | 用 `result.IsSuccess` |
+| `Console.WriteLine(resultInt)` 绑定到 `WriteLine(int)`，打印值 | `Result<T>→T` 让 `int` 重载更具体 | 显式 `result.ToString()` |
 | `cond ? resultInt : resultPlain` CS0172 | `Result<T>` 与 `Result` 双向隐式转换 | 显式转换其中一个分支，或改 `if/else` |
 | `int v = failedResult` 得到 `0`，不抛 | D-03 使用 `ValueOrDefault` | 需要失败即抛时用 `.Value` |
 | `throw Result.Ok()` 抛 `DefaultError` | `throw` 无法区分成功/失败 | 只 `throw` 失败结果 |
-| `Result<string>` / `Result<Exception>` / `Result<bool>` 不能用隐式构造/取值 | 保留类型的二义性 | 见第 4 节 |
+| `Result<object> r = "x"` 变成失败 | `string→Result<T>` 比 `T→Result<T>` 更具体 | `(object)"x"` 或 `Result.Ok<object>("x")` |
+| `Result<string>` / `Result<Exception>` 不能用隐式构造/取值 | 保留类型的二义性 | 见第 4 节 |
 
 ---
 
@@ -331,8 +336,9 @@ Exception k = h;                            // CS0457
 
 | 项 | 位置 | 说明 |
 | --- | --- | --- |
-| `string → Result`、`Exception → Result`、`bool → Result`、`Result → bool/Exception` | `Result`（partial） | 转换内部统一走 `Fail(...)`，保证错误工厂生效 |
-| `string/Exception → Result<T>`、`Result<T> → T/bool/Exception/Result` | `Result<T>`（改为 partial） | 保留类型二义性见第 4 节 |
+| `string → Result`、`Exception → Result`、`bool → Result`、`Result → Exception` | `Result`（partial） | 转换内部统一走 `Fail(...)`，保证错误工厂生效 |
+| `string/Exception → Result<T>`、`Result<T> → T/Exception/Result` | `Result<T>`（改为 partial） | 保留类型二义性见第 4 节 |
+| `operator true/false/!` | `ResultBase` | 布尔上下文；不提供 implicit `bool` |
 | `ErrorMessage`、`Throw`、`ThrowIfFailed` | `ResultBase` | `Throw` 复用 `Result → Exception` 的解析逻辑 |
 | `ToError` | 扩展类 | 仅 `string` / `Exception` 两个来源，各含泛型版本 |
 | `DefaultErrorMessage` / `DefaultError` | `Result` | `const string` + 进程级 `Exception` 单例 |
@@ -344,7 +350,7 @@ Exception k = h;                            // CS0457
 MAG-001 -> MagNetConversionTests.String_literal_is_failure
 MAG-002 -> MagNetConversionTests.Exception_literal_is_failure_and_keeps_instance
 MAG-003 -> MagNetConversionTests.Bool_literal_maps_to_success_or_failure
-MAG-004 -> MagNetConversionTests.Result_to_bool_returns_IsSuccess
+MAG-004 -> MagNetConversionTests.Result_supports_truthiness
 MAG-006 -> MagNetConversionTests.Result_to_exception_prefers_exceptional_error
 MAG-007 -> MagNetConversionTests.Value_result_to_plain_keeps_reasons
 MAG-008a -> MagNetReadTests.ErrorMessage_joins_all_error_messages
